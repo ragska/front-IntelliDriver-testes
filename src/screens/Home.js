@@ -1,14 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import casual_dog from '../assets/casual_dog.png'; 
+import logo from '../assets/logo.png';
 import Google from '../assets/Google.png';
+import NavBar from '../components/Navbar';
 
 export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={casual_dog}
-        style={styles.casualDogImage}
+        source={logo}
+        style={styles.logoImage}
       />
 
       <Text style={styles.title}>Ótimo dia!</Text>
@@ -20,22 +21,18 @@ export default function Home({ navigation }) {
           source={Google}
           style={styles.buttonImage}
         />
-        <Text style={styles.buttonText}>Como deseja acessar?</Text>
+        <Text style={styles.buttonText}>Acessar com google</Text>
       </TouchableOpacity>
 
       <TouchableOpacity 
         style={styles.outlineButton}
-        onPress={() => navigation.navigate('Activity') }
+        onPress={() => navigation.navigate('Login') }
       >
-        <Text style={styles.outlineButtonText}>Atividade</Text>
+        <Text style={styles.outlineButtonText}>Email</Text>
       </TouchableOpacity>
+      
+      <NavBar />
 
-      <TouchableOpacity 
-        style={styles.outlineButton}
-        onPress={() => navigation.navigate('Cardapio') }
-      >
-        <Text style={styles.outlineButtonText}>Restaurante</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -46,13 +43,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F5FCFF',
-    padding: 20,
+    padding: 5,
+    paddingBottom: 40
   },
 
-  casualDogImage: {
-    width: 300,
+  logoImage: {
+    width: 250,
     height: 250,
-    marginBottom: 20,
+    margin: 15,
   },
 
   title: {
@@ -63,7 +61,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     fontSize: 12,
-    marginBottom: 60,
+    marginBottom: 30,
   },
 
   tamanhoTelaButton: {
