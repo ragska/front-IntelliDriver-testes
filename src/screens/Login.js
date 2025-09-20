@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
 import BackButton from '../components/BackButton';
 import { Checkbox } from 'react-native-paper';
+import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
+import { getFontFamily } from '../hooks/useFontLoader';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -34,7 +36,7 @@ export default function Login() {
         value={username}
         onChangeText={setUsername}
         placeholder="Digite seu E-mail"
-        placeholderTextColor="#A0A0A0"
+        placeholderTextColor={colors.text.placeholder}
       />
 
       <Text style={styles.inputText}>Senha</Text>
@@ -43,18 +45,22 @@ export default function Login() {
         value={password}
         onChangeText={setPassword}
         placeholder="Digite sua senha"
-        placeholderTextColor="#A0A0A0"
+        placeholderTextColor={colors.text.placeholder}
         secureTextEntry
       />
 
       <View style={styles.optionsRow}>
-        <Checkbox
-          status={isChecked ? 'checked' : 'unchecked'}
-          onPress={() => setIsChecked(!isChecked)}
-          color="#00C853"
-        />
-        <Text style={styles.subtitle}>Lembrar senha</Text>
-        <Text style={styles.forgot}>Esqueci minha senha</Text>
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            status={isChecked ? 'checked' : 'unchecked'}
+            onPress={() => setIsChecked(!isChecked)}
+            color={colors.primary}
+          />
+          <Text style={styles.checkboxText}>Lembrar senha</Text>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.forgot}>Esqueci minha senha</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.buttonRow}>
@@ -74,13 +80,13 @@ export default function Login() {
       </View>
 
       <View style={styles.socialRow}>
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.socialButton}>
           <Image
             source={require('../assets/Google.png')}
             style={styles.socialIcon}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.socialButton}>
           <Image
             source={require('../assets/Facebook.png')}
             style={styles.socialIcon}
@@ -94,101 +100,129 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
-    paddingHorizontal: 20,
-    paddingTop: 40,
+    backgroundColor: colors.background,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xxl,
   },
   title: {
-    fontSize: 45,
-    fontWeight: 'bold',
-    color: '#33373dff',
-    marginTop: 50,
+    fontSize: fonts.sizes.hero,
+    fontFamily: getFontFamily('Poppins', 'Bold'),
+    color: colors.text.primary,
+    marginTop: spacing.xxl + spacing.md,
   },
   subtitle: {
-    fontSize: 13,
-    color: '#3d3d3dff',
-    marginBottom: 25,
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'Regular'),
+    color: colors.text.secondary,
+    marginBottom: spacing.xl,
   },
   inputText: {
-    fontSize: 11,
-    color: '#2C2C2C',
-    marginBottom: 4,
+    fontSize: fonts.sizes.sm,
+    fontFamily: getFontFamily('Montserrat', 'Medium'),
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
   },
   input: {
-    backgroundColor: '#e1e4ecff',
-    borderRadius: 5,
-    padding: 20,
-    fontSize: 13,
-    marginBottom: 20,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.sm,
+    padding: spacing.lg,
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'Regular'),
+    marginBottom: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    ...shadows.small,
   },
   optionsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 25,
+    alignItems: 'center',
+    marginBottom: spacing.xl,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  checkboxText: {
+    fontSize: fonts.sizes.sm,
+    fontFamily: getFontFamily('Poppins', 'Regular'),
+    color: colors.text.secondary,
+    marginLeft: spacing.xs,
   },
   forgot: {
-    fontSize: 13,
-    color: '#4CAF50',
+    fontSize: fonts.sizes.sm,
+    fontFamily: getFontFamily('Poppins', 'Medium'),
+    color: colors.primary,
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 30,
+    marginBottom: spacing.xl,
+    gap: spacing.md,
   },
   primaryButton: {
     flex: 1,
-    backgroundColor: '#00C853',
-    paddingVertical: 14,
-    borderRadius: 8,
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.md,
     alignItems: 'center',
-    marginRight: 10,
+    ...shadows.medium,
   },
   primaryButtonText: {
-    color: '#FFF',
-    fontSize: 15,
-    fontWeight: 'bold',
+    color: colors.surface,
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'SemiBold'),
   },
   secondaryButton: {
     flex: 1,
-    borderColor: '#00C853',
-    borderWidth: 1.5,
-    paddingVertical: 14,
-    borderRadius: 8,
+    borderColor: colors.primary,
+    borderWidth: 2,
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.md,
     alignItems: 'center',
-    marginLeft: 10,
+    backgroundColor: colors.surface,
   },
   secondaryButtonText: {
-    color: '#00C853',
-    fontSize: 15,
-    fontWeight: 'bold',
+    color: colors.primary,
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'SemiBold'),
   },
   separator: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: spacing.xl,
   },
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#a5a5a5ff',
+    backgroundColor: colors.accent,
   },
   separatorText: {
-    marginHorizontal: 10,
-    fontSize: 13,
-    color: '#6F6F6F',
+    marginHorizontal: spacing.md,
+    fontSize: fonts.sizes.sm,
+    fontFamily: getFontFamily('Montserrat', 'Regular'),
+    color: colors.text.light,
   },
   socialRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 20,
+    gap: spacing.lg,
+  },
+  socialButton: {
+    width: 60,
+    height: 60,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.surface,
+    borderColor: colors.accent,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...shadows.small,
   },
   socialIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
-    backgroundColor: '#ebebebff',
-    borderColor: '#ebebebff',
-    borderWidth: 1,
-    padding: 35,
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
 });

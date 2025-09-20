@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Octicons from '@expo/vector-icons/Octicons';
+import { colors, spacing, borderRadius, shadows } from '../constants/theme';
 
 export default function NavBar() {
   const navigation = useNavigation();
@@ -9,14 +10,14 @@ export default function NavBar() {
   return (
     <View style={styles.container}>
       
-      <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Cardapio')}>
-        <Octicons style={styles.item} size={30} name="history"/>
+      <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Historico')}>
+        <Octicons style={styles.item} size={28} name="history"/>
       </TouchableOpacity>
       <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Home')}>
-        <Octicons style={styles.item} size={30} name="home"/>
+        <Octicons style={styles.item} size={28} name="home"/>
       </TouchableOpacity>
       <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Activity')}>
-        <Octicons style={styles.item} size={30} name="bell"/>
+        <Octicons style={styles.item} size={28} name="bell"/>
       </TouchableOpacity>
     </View>
   );
@@ -25,30 +26,30 @@ export default function NavBar() {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    margin: 12,
-    marginBottom: 40,
-    backgroundColor: '#fff',
-    borderRadius: 24,
+    bottom: spacing.xl,
+    left: spacing.md,
+    right: spacing.md,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 70,
+    ...shadows.large,
   },
   item: {   
-    color: '#22d156ff'
+    color: colors.primary
   },
   iconWrapper: {
     flex: 1,
     alignItems: 'center',
+    paddingVertical: spacing.md,
   },
   activeCircle: {
-    backgroundColor: '#6bbf59',
-    padding: 12,
-    borderRadius: 50,
-    marginTop: -24,
-    elevation: 4,
+    backgroundColor: colors.secondary,
+    padding: spacing.md,
+    borderRadius: borderRadius.round,
+    marginTop: -spacing.lg,
+    ...shadows.medium,
   },
 });
