@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
+import EcoCoinIcon from '../assets/ecocoin-icon';
 
 export default function PercursoDetalhes() {
   const navigation = useNavigation();
@@ -55,6 +56,39 @@ export default function PercursoDetalhes() {
             value={percurso.custo} 
             style={styles.costValue} 
           />
+        </View>
+
+        {/* EcoCoins Ganhos */}
+        <View style={styles.ecoCoinsSection}>
+          <View style={styles.ecoCoinsHeader}>
+            <EcoCoinIcon size={24} style={styles.ecoCoinsHeaderIcon} />
+            <Text style={styles.ecoCoinsTitle}>
+              {(percurso.ecoCoins || 0) >= 0 ? 'EcoCoins Ganhos' : 'EcoCoins Perdidos'}
+            </Text>
+          </View>
+          <View style={[
+            styles.ecoCoinsCard,
+            (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsCardNegative : styles.ecoCoinsCardPositive
+          ]}>
+            <Text style={[
+              styles.ecoCoinsAmount,
+              (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsAmountNegative : styles.ecoCoinsAmountPositive
+            ]}>
+              {(percurso.ecoCoins || 0) >= 0 ? `+${percurso.ecoCoins || 0}` : percurso.ecoCoins || 0}
+            </Text>
+            <Text style={[
+              styles.ecoCoinsLabel,
+              (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsLabelNegative : styles.ecoCoinsLabelPositive
+            ]}>
+              EcoCoins
+            </Text>
+            <Text style={styles.ecoCoinsDescription}>
+              {(percurso.ecoCoins || 0) >= 0 
+                ? 'Baseado na eficiência da sua condução' 
+                : 'Condução ineficiente resulta em perda de EcoCoins'
+              }
+            </Text>
+          </View>
         </View>
 
         {/* Rota */}
@@ -196,6 +230,69 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#7F9170',
     lineHeight: 20,
+  },
+  ecoCoinsSection: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: 'rgba(42, 60, 26, 0.1)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  ecoCoinsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  ecoCoinsHeaderIcon: {
+    marginRight: 8,
+  },
+  ecoCoinsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2A3C1A',
+  },
+  ecoCoinsCard: {
+    borderRadius: 12,
+    padding: 20,
+    alignItems: 'center',
+  },
+  ecoCoinsCardPositive: {
+    backgroundColor: '#BFE59E',
+  },
+  ecoCoinsCardNegative: {
+    backgroundColor: '#FFE5E5',
+  },
+  ecoCoinsAmount: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  ecoCoinsAmountPositive: {
+    color: '#2A3C1A',
+  },
+  ecoCoinsAmountNegative: {
+    color: '#D32F2F',
+  },
+  ecoCoinsLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  ecoCoinsLabelPositive: {
+    color: '#51663E',
+  },
+  ecoCoinsLabelNegative: {
+    color: '#B71C1C',
+  },
+  ecoCoinsDescription: {
+    fontSize: 12,
+    color: '#7F9170',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   statsContainer: {
     flexDirection: 'row',

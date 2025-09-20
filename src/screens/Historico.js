@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import NavBar from '../components/Navbar';
 import Calendario from '../components/Calendario';
+import EcoCoinIcon from '../assets/ecocoin-icon';
 import { getPercursosByDate, formatDateToString, getTodayString } from '../data/percursosData';
 
 export default function Historico() {
@@ -38,21 +39,48 @@ export default function Historico() {
     });
   };
 
-  const renderPercursoItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={() => handleItemPress(item)}>
-      <Image source={{ uri: item.img }} style={styles.img} />
-      <View style={styles.itemContent}>
-        <Text style={styles.itemText}>{item.nome}</Text>
-        <View style={styles.itemDetails}>
-          <Text style={styles.itemTime}>{item.horario}</Text>
-          <Text style={styles.itemDistance}>{item.distancia}</Text>
-        </View>
-        <View style={styles.viewMoreContainer}>
-          <Text style={styles.viewMoreText}>Toque para ver detalhes ›</Text>
-        </View>
+  const renderPercursoItem = ({ item, index }) => {
+    const ecoCoins = item.ecoCoins || 0;
+    const isNegative = ecoCoins < 0;
+    const showTimeHeader = index === 0 || percursos[index - 1]?.horario !== item.horario;
+    
+    return (
+      <View>
+        {/* Divisor de horário */}
+        {showTimeHeader && (
+          <View style={[styles.timeHeader, index === 0 && styles.firstTimeHeader]}>
+            <Text style={styles.timeHeaderText}>{item.horario}</Text>
+          </View>
+        )}
+        
+        {/* Item do percurso */}
+        <TouchableOpacity style={styles.item} onPress={() => handleItemPress(item)}>
+          <Image source={{ uri: item.img }} style={styles.img} />
+          <View style={styles.itemContent}>
+            <View style={styles.itemTopRow}>
+              <Text style={styles.itemText}>{item.nome}</Text>
+              <Text style={styles.itemDistance}>{item.distancia}</Text>
+            </View>
+            <View style={[
+              styles.ecoCoinsContainer,
+              isNegative ? styles.ecoCoinsContainerNegative : styles.ecoCoinsContainerPositive
+            ]}>
+              <EcoCoinIcon size={16} style={styles.ecoCoinsIconStyle} />
+              <Text style={[
+                styles.ecoCoinsText,
+                isNegative ? styles.ecoCoinsTextNegative : styles.ecoCoinsTextPositive
+              ]}>
+                {isNegative ? ecoCoins : `+${ecoCoins}`} EcoCoins
+              </Text>
+            </View>
+            <View style={styles.viewMoreContainer}>
+              <Text style={styles.viewMoreText}>Toque para ver detalhes ›</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
-  );
+    );
+  };
 
   const ListHeaderComponent = () => (
     <View style={styles.listHeader}>
@@ -231,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     backgroundColor: '#FFFFFF',
     padding: 16,
-    marginBottom: 8,
+    marginBottom: 2,
     borderRadius: 12,
     shadowColor: 'rgba(42, 60, 26, 0.1)',
     shadowOffset: { width: 0, height: 2 },
@@ -248,25 +276,74 @@ const styles = StyleSheet.create({
   itemContent: {
     flex: 1,
   },
+  itemTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
   itemText: {
     fontSize: 14,
     fontWeight: '500',
     color: '#2A3C1A',
-    marginBottom: 4,
+    flex: 1,
+    marginRight: 8,
   },
   itemDetails: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  itemTime: {
-    fontSize: 12,
-    color: '#7F9170',
-    fontWeight: '500',
+  timeHeader: {
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    backgroundColor: '#F8F9F7',
+    borderLeftWidth: 1,
+    borderLeftColor: '#7F9170',
+    marginBottom: 4,
+    marginTop: 8,
+  },
+  firstTimeHeader: {
+    marginTop: 0,
+  },
+  timeHeaderText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#51663E',
   },
   itemDistance: {
     fontSize: 12,
-    color: '#666',
+    color: '#7F9170',
+    fontWeight: '500',
+    minWidth: 50,
+    textAlign: 'right',
+  },
+  ecoCoinsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+    alignSelf: 'flex-start',
+  },
+  ecoCoinsContainerPositive: {
+    backgroundColor: '#BFE59E',
+  },
+  ecoCoinsContainerNegative: {
+    backgroundColor: '#FFE5E5',
+  },
+  ecoCoinsIconStyle: {
+    marginRight: 4,
+  },
+  ecoCoinsText: {
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  ecoCoinsTextPositive: {
+    color: '#2A3C1A',
+  },
+  ecoCoinsTextNegative: {
+    color: '#D32F2F',
   },
   viewMoreContainer: {
     marginTop: 8,

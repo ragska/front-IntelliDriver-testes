@@ -1,39 +1,102 @@
 {
     "atividades": [
   {
-    "date": "2024-06-01",
+    "date": "2024-09-20",
     "data": [
-      { "id": "1", "nome": "Corrida - 5km", "icon": "flame" }, 
-      { "id": "2", "nome": "Caminhada - 2km", "icon": "pulse" },
-      { "id": "3", "nome": "Conquista: Primeira atividade!", "icon": "trophy" },
-      { "id": "4", "nome": "+50 Ecoins (atividade completada)", "icon": "plus-circle" }
+      { 
+        "id": "1", 
+        "nome": "Novo percurso Casa-Trabalho adicionado", 
+        "icon": "location", 
+        "timestamp": "14:30",
+        "tipo": "percurso"
+      },
+      { 
+        "id": "2", 
+        "nome": "+75 EcoCoins por condução eco-eficiente", 
+        "icon": "ecocoin", 
+        "timestamp": "09:15",
+        "tipo": "ecoCoin"
+      },
+      { 
+        "id": "3", 
+        "nome": "Conquista: 1ª semana de condução perfeita!", 
+        "icon": "trophy", 
+        "timestamp": "08:45",
+        "tipo": "conquista"
+      }
     ]
   },
   {
-    "date": "2024-06-02",
+    "date": "2024-09-19",
     "data": [
-      { "id": "5", "nome": "Corrida - 3km", "icon": "flame" },
-      { "id": "6", "nome": "Ciclismo - 12km", "icon": "zap" }, 
-      { "id": "7", "nome": "Desafio concluído - 5 dias seguidos", "icon": "checklist" },
-      { "id": "8", "nome": "-20 Ecoins (meta não cumprida)", "icon": "x-circle" }
+      { 
+        "id": "4", 
+        "nome": "Alerta: Frenagem brusca detectada 3x hoje", 
+        "icon": "alert", 
+        "timestamp": "18:22",
+        "tipo": "alerta"
+      },
+      { 
+        "id": "5", 
+        "nome": "+50 EcoCoins por velocidade adequada", 
+        "icon": "ecocoin", 
+        "timestamp": "16:10",
+        "tipo": "ecoCoin"
+      },
+      { 
+        "id": "6", 
+        "nome": "Percurso Centro-Casa otimizado", 
+        "icon": "sync", 
+        "timestamp": "12:30",
+        "tipo": "otimizacao"
+      },
+      { 
+        "id": "7", 
+        "nome": "-30 EcoCoins por excesso de velocidade", 
+        "icon": "dash", 
+        "timestamp": "11:45",
+        "tipo": "penalizacao"
+      }
     ]
   },
   {
-    "date": "2024-06-03",
+    "date": "2024-09-18",
     "data": [
-      { "id": "9", "nome": "Caminhada - 4km", "icon": "pulse" },
-      { "id": "10", "nome": "Conquista: 10km acumulados!", "icon": "trophy" },
-      { "id": "11", "nome": "Corrida - 6km", "icon": "flame" },
-      { "id": "12", "nome": "+30 Ecoins (consistência)", "icon": "plus-circle" }
-    ]
-  },
-  {
-    "date": "2024-06-04",
-    "data": [
-      { "id": "13", "nome": "Corrida - 8km", "icon": "flame" },
-      { "id": "14", "nome": "Ciclismo - 20km", "icon": "zap" },
-      { "id": "15", "nome": "Desafio concluído - 10 dias seguidos", "icon": "checklist" },
-      { "id": "16", "nome": "-10 Ecoins (faltou no treino)", "icon": "x-circle" }
+      { 
+        "id": "8", 
+        "nome": "Regressão: Desempenho em curvas diminuiu 15%", 
+        "icon": "graph", 
+        "timestamp": "20:15",
+        "tipo": "regressao"
+      },
+      { 
+        "id": "9", 
+        "nome": "Conquista: 500 EcoCoins acumulados!", 
+        "icon": "trophy", 
+        "timestamp": "17:30",
+        "tipo": "conquista"
+      },
+      { 
+        "id": "10", 
+        "nome": "Novo percurso Supermercado salvo", 
+        "icon": "location", 
+        "timestamp": "15:20",
+        "tipo": "percurso"
+      },
+      { 
+        "id": "11", 
+        "nome": "+25 EcoCoins por uso de freio motor", 
+        "icon": "ecocoin", 
+        "timestamp": "14:10",
+        "tipo": "ecoCoin"
+      },
+      { 
+        "id": "12", 
+        "nome": "Alerta: Aceleração agressiva recorrente", 
+        "icon": "alert", 
+        "timestamp": "09:30",
+        "tipo": "alerta"
+      }
     ]
   }
     ]

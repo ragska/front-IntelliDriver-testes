@@ -12,7 +12,8 @@ export const percursosData = {
       combustivel: '1.2L',
       custo: 'R$ 6,50',
       rota: 'Av. Principal → Rua das Flores → Centro',
-      observacoes: 'Trânsito moderado no horário de pico'
+      observacoes: 'Trânsito moderado no horário de pico',
+      ecoCoins: 45
     },
     { 
       id: '2', 
@@ -25,7 +26,8 @@ export const percursosData = {
       combustivel: '0.3L',
       custo: 'R$ 1,65',
       rota: 'Centro → Av. Esportiva',
-      observacoes: 'Caminho sem trânsito'
+      observacoes: 'Caminho sem trânsito',
+      ecoCoins: 28
     },
     { 
       id: '3', 
@@ -38,7 +40,8 @@ export const percursosData = {
       combustivel: '1.4L',
       custo: 'R$ 7,35',
       rota: 'Av. Esportiva → Rodovia → Av. Principal',
-      observacoes: 'Trânsito leve no retorno'
+      observacoes: 'Trânsito leve no retorno',
+      ecoCoins: 52
     },
   ],
   '2025-09-19': [
@@ -53,7 +56,8 @@ export const percursosData = {
       combustivel: '0.8L',
       custo: 'R$ 4,20',
       rota: 'Av. Principal → Shopping Center',
-      observacoes: 'Estacionamento gratuito'
+      observacoes: 'Trânsito fluindo bem',
+      ecoCoins: 38
     },
     { 
       id: '5', 
@@ -66,7 +70,8 @@ export const percursosData = {
       combustivel: '0.2L',
       custo: 'R$ 1,05',
       rota: 'Via comercial direta',
-      observacoes: 'Percurso rápido'
+      observacoes: 'Percurso rápido',
+      ecoCoins: 22
     },
     { 
       id: '6', 
@@ -79,29 +84,30 @@ export const percursosData = {
       combustivel: '0.9L',
       custo: 'R$ 4,70',
       rota: 'Via residencial → Av. Principal',
-      observacoes: 'Trânsito intenso no fim de tarde'
+      observacoes: 'Trânsito intenso no fim de tarde',
+      ecoCoins: -15
     },
   ],
   '2025-09-18': [
-    { id: '7', nome: 'Casa → Escola', img: 'https://picsum.photos/200/200?26', horario: '07:15', distancia: '6.8 km' },
-    { id: '8', nome: 'Escola → Biblioteca', img: 'https://picsum.photos/200/200?27', horario: '16:00', distancia: '1.5 km' },
-    { id: '9', nome: 'Biblioteca → Casa', img: 'https://picsum.photos/200/200?28', horario: '18:30', distancia: '7.9 km' },
+    { id: '7', nome: 'Casa → Escola', img: 'https://picsum.photos/200/200?26', horario: '07:15', distancia: '6.8 km', ecoCoins: 31 },
+    { id: '8', nome: 'Escola → Biblioteca', img: 'https://picsum.photos/200/200?27', horario: '16:00', distancia: '1.5 km', ecoCoins: 18 },
+    { id: '9', nome: 'Biblioteca → Casa', img: 'https://picsum.photos/200/200?28', horario: '18:30', distancia: '7.9 km', ecoCoins: 35 },
   ],
   '2025-09-17': [
-    { id: '10', nome: 'Casa → Hospital', img: 'https://picsum.photos/200/200?29', horario: '09:00', distancia: '11.2 km' },
-    { id: '11', nome: 'Hospital → Farmácia', img: 'https://picsum.photos/200/200?30', horario: '11:30', distancia: '0.8 km' },
-    { id: '12', nome: 'Farmácia → Casa', img: 'https://picsum.photos/200/200?31', horario: '12:15', distancia: '11.7 km' },
+    { id: '10', nome: 'Casa → Hospital', img: 'https://picsum.photos/200/200?29', horario: '09:00', distancia: '11.2 km', ecoCoins: 48 },
+    { id: '11', nome: 'Hospital → Farmácia', img: 'https://picsum.photos/200/200?30', horario: '11:30', distancia: '0.8 km', ecoCoins: 12 },
+    { id: '12', nome: 'Farmácia → Casa', img: 'https://picsum.photos/200/200?31', horario: '12:15', distancia: '11.7 km', ecoCoins: 50 },
   ],
   '2025-09-16': [
-    { id: '13', nome: 'Casa → Centro da Cidade', img: 'https://picsum.photos/200/200?32', horario: '10:45', distancia: '18.3 km' },
-    { id: '14', nome: 'Centro → Banco', img: 'https://picsum.photos/200/200?33', horario: '14:20', distancia: '0.5 km' },
-    { id: '15', nome: 'Banco → Restaurante', img: 'https://picsum.photos/200/200?34', horario: '15:30', distancia: '1.2 km' },
-    { id: '16', nome: 'Restaurante → Casa', img: 'https://picsum.photos/200/200?35', horario: '19:00', distancia: '17.8 km' },
+    { id: '13', nome: 'Casa → Centro da Cidade', img: 'https://picsum.photos/200/200?32', horario: '10:45', distancia: '18.3 km', ecoCoins: -8 },
+    { id: '14', nome: 'Centro → Banco', img: 'https://picsum.photos/200/200?33', horario: '14:20', distancia: '0.5 km', ecoCoins: 8 },
+    { id: '15', nome: 'Banco → Restaurante', img: 'https://picsum.photos/200/200?34', horario: '15:30', distancia: '1.2 km', ecoCoins: -3 },
+    { id: '16', nome: 'Restaurante → Casa', img: 'https://picsum.photos/200/200?35', horario: '19:00', distancia: '17.8 km', ecoCoins: 62 },
   ],
   '2025-09-15': [
-    { id: '17', nome: 'Casa → Parque', img: 'https://picsum.photos/200/200?36', horario: '06:30', distancia: '4.2 km' },
-    { id: '18', nome: 'Parque → Padaria', img: 'https://picsum.photos/200/200?37', horario: '08:15', distancia: '1.8 km' },
-    { id: '19', nome: 'Padaria → Casa', img: 'https://picsum.photos/200/200?38', horario: '09:00', distancia: '5.1 km' },
+    { id: '17', nome: 'Casa → Parque', img: 'https://picsum.photos/200/200?36', horario: '06:30', distancia: '4.2 km', ecoCoins: 26 },
+    { id: '18', nome: 'Parque → Padaria', img: 'https://picsum.photos/200/200?37', horario: '08:15', distancia: '1.8 km', ecoCoins: 20 },
+    { id: '19', nome: 'Padaria → Casa', img: 'https://picsum.photos/200/200?38', horario: '09:00', distancia: '5.1 km', ecoCoins: 28 },
   ],
   '2025-09-14': [
     { id: '20', nome: 'Casa → Aeroporto', img: 'https://picsum.photos/200/200?39', horario: '05:30', distancia: '35.2 km' },
