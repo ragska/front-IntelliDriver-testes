@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fonts.sizes.hero,
-    fontFamily: getFontFamily('Poppins', 'Bold'),
+    fontWeight: 'bold',
     color: colors.text.primary,
     marginTop: spacing.xxl + spacing.md,
   },

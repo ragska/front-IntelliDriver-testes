@@ -8,8 +8,9 @@ import Activity from './src/screens/Activity';
 import Historico from './src/screens/Historico';
 import Login from './src/screens/Login';
 import PercursoDetalhes from './src/screens/PercursoDetalhes';
-import Analytics from './src/screens/Analytics';
+import CarsAnalytics from './src/screens/CarsAnalytics';
 import Profile from './src/screens/Profile';
+import ProfileStats from './src/screens/ProfileStats';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,8 +36,9 @@ export default function App() {
         <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="PercursoDetalhes" component={PercursoDetalhes} />
-        <Stack.Screen name="Analytics" component={Analytics} />
+        <Stack.Screen name="CarsAnalytics" component={CarsAnalytics} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="ProfileStats" component={ProfileStats} />
       </Stack.Navigator>
     </NavigationContainer>
   );

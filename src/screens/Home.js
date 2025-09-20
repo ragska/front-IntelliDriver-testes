@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: fonts.sizes.title,
-    fontFamily: getFontFamily('Poppins', 'Bold'),
+    fontWeight: 'bold',
     color: colors.surface,
     marginBottom: spacing.lg,
   },

@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   },
   title: { 
     fontSize: fonts.sizes.title,
-    fontFamily: getFontFamily('Poppins', 'Bold'),
+    fontWeight: 'bold',
     color: colors.text.primary,
     flex: 1,
   },
