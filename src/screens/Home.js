@@ -63,14 +63,6 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Botão circular superior */}
-      <TouchableOpacity 
-        style={styles.loginButton}
-        onPress={() => navigation.navigate('Login')}
-      >
-        <Ionicons name="person" size={24} color={colors.surface} />
-      </TouchableOpacity>
-
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header com gradiente verde */}
         <LinearGradient
@@ -389,18 +381,5 @@ const styles = StyleSheet.create({
     height: 4,
     backgroundColor: '#FF6B35',
     transform: [{ rotate: '45deg' }],
-  },
-  loginButton: {
-    position: 'absolute',
-    top: spacing.xxl + spacing.md,
-    right: spacing.lg,
-    width: 50,
-    height: 50,
-    borderRadius: borderRadius.round,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    ...shadows.medium,
   },
 });

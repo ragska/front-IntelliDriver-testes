@@ -13,11 +13,17 @@ export default function NavBar() {
       <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Historico')}>
         <Octicons style={styles.item} size={28} name="history"/>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Analytics')}>
+        <Octicons style={styles.item} size={28} name="graph"/>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Home')}>
         <Octicons style={styles.item} size={28} name="home"/>
       </TouchableOpacity>
       <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Activity')}>
         <Octicons style={styles.item} size={28} name="bell"/>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Profile')}>
+        <Octicons style={styles.item} size={28} name="person"/>
       </TouchableOpacity>
     </View>
   );
