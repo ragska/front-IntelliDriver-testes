@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import NavBar from '../components/Navbar';
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
+import { getFontFamily } from '../hooks/useFontLoader';
 
 export default function CarsAnalytics({ navigation }) {
   const [analyticsData, setAnalyticsData] = useState(null);
