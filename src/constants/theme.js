@@ -45,6 +45,7 @@ export const colors = {
   accent: '#ADBBA0',       // Verde acinzentado - detalhes e elementos neutros
   dark: '#51663E',         // Verde escuro - textos e elementos importantes
   darker: '#2A3C1A',       // Verde mais escuro - títulos e contrastes máximos
+  logo: '#2c6c28',
 
   // ========================================
   // CORES AUXILIARES DE INTERFACE

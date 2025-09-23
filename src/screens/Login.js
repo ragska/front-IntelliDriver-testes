@@ -29,9 +29,6 @@ import BackButton from '../components/BackButton';
 // Importação do componente Header para cabeçalho com logo centralizada
 import Header from '../components/Header';
 
-// Importação do componente Checkbox da biblioteca Paper
-import { Checkbox } from 'react-native-paper';
-
 // Importações do sistema de design centralizado
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
 
@@ -70,7 +67,7 @@ import { getFontFamily } from '../hooks/useFontLoader';
  * 
  * @returns {JSX.Element} - Tela de login renderizada
  */
-export default function Login() {
+export default function Login({ navigation }) {
   
   // ========================================
   // ESTADOS LOCAIS DO COMPONENTE
@@ -100,18 +97,6 @@ export default function Login() {
    * Característica: secureTextEntry ativo
    */
   const [password, setPassword] = useState('');
-
-  /**
-   * ESTADO DO CHECKBOX "LEMBRAR SENHA"
-   * 
-   * Controla se a opção de lembrar senha está ativada.
-   * Usado para persistência de credenciais (futuro).
-   * 
-   * Tipo: boolean
-   * Valor inicial: false (não marcado)
-   * Atualizado via: onPress do Checkbox
-   */
-  const [isChecked, setIsChecked] = useState(false);
 
   // ========================================
   // FUNÇÕES DE NEGÓCIO
@@ -156,9 +141,8 @@ export default function Login() {
     // Validação simples de credenciais
     if (username === validUsername && password === validPassword) {
       alert('Login bem-sucedido!');
-      // TODO: Implementar navegação para dashboard
-      // TODO: Armazenar estado de autenticação
-      // TODO: Gerenciar tokens de sessão
+      // Navegar para a tela Home após login bem-sucedido
+      navigation.navigate('Home');
     } else {
       alert('Usuário ou senha inválidos.');
       // TODO: Destacar campos com erro
@@ -192,354 +176,222 @@ export default function Login() {
       <Header />
 
       {/* ========================================
-          HEADER DE NAVEGAÇÃO E TÍTULO
+          HEADER DE NAVEGAÇÃO
           ======================================== */}
       
       <View style={styles.navigationHeader}>
         <BackButton />
-        <Text style={styles.navigationTitle}>Login</Text>
-        <View style={styles.placeholder} />
       </View>
       
       {/* ========================================
-          CABEÇALHO DA TELA
+          CONTEÚDO PRINCIPAL
           ======================================== */}
       
-      {/**
-       * TÍTULO PRINCIPAL
-       * 
-       * "Acesse" em fonte heroica para impacto visual.
-       * Primeira informação que chama atenção do usuário.
-       * Fonte grande e negrito seguindo hierarquia visual.
-       */}
-      <Text style={styles.title}>Acesse</Text>
-
-      {/**
-       * SUBTÍTULO EXPLICATIVO
-       * 
-       * "com E-mail e senha" complementa o título principal.
-       * Esclarece o método de autenticação disponível.
-       * Fonte menor e peso regular para hierarquia secundária.
-       */}
-      <Text style={styles.subtitle}>com E-mail e senha</Text>
-
-      {/* ========================================
-          FORMULÁRIO DE CREDENCIAIS
-          ======================================== */}
-      
-      {/**
-       * SEÇÃO DE EMAIL/USUÁRIO
-       * 
-       * Label + campo de entrada para identificação do usuário.
-       * Aceita tanto email quanto username conforme validação.
-       */
-      
-      /**
-       * LABEL DO CAMPO EMAIL
-       * 
-       * Texto descritivo acima do campo de entrada.
-       * Fonte pequena/média com peso médio para legibilidade.
-       */}
-      <Text style={styles.inputText}>E-mail</Text>
-      
-      {/**
-       * CAMPO DE ENTRADA - EMAIL/USUÁRIO
-       * 
-       * TextInput controlado para captura do identificador.
-       * 
-       * Características:
-       * - Valor controlado pelo estado 'username'
-       * - Placeholder orientativo
-       * - Cor de placeholder temática
-       * - Atualização em tempo real via onChangeText
-       * 
-       * Funcionalidades futuras:
-       * - Validação de formato de email
-       * - Autocomplete de usuários anteriores
-       * - Verificação de existência em tempo real
-       */}
-      <TextInput
-        style={styles.input}
-        value={username}
-        onChangeText={setUsername}
-        placeholder="Digite seu E-mail"
-        placeholderTextColor={colors.text.placeholder}
-      />
-
-      {/**
-       * SEÇÃO DE SENHA
-       * 
-       * Label + campo seguro para senha do usuário.
-       * Campo oculto com opção de revelação (futuro).
-       */
-      
-      /**
-       * LABEL DO CAMPO SENHA
-       * 
-       * Texto descritivo para o campo de senha.
-       * Mesmo estilo do label de email para consistência.
-       */}
-      <Text style={styles.inputText}>Senha</Text>
-      
-      {/**
-       * CAMPO DE ENTRADA - SENHA
-       * 
-       * TextInput seguro para captura da senha.
-       * 
-       * Características especiais:
-       * - secureTextEntry: oculta texto digitado
-       * - Valor controlado pelo estado 'password'
-       * - Placeholder orientativo
-       * - Cor de placeholder temática
-       * 
-       * Funcionalidades futuras:
-       * - Botão de mostrar/ocultar senha
-       * - Indicador de força da senha
-       * - Validação de critérios de segurança
-       * - Autocomplete desabilitado por segurança
-       */}
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Digite sua senha"
-        placeholderTextColor={colors.text.placeholder}
-        secureTextEntry
-      />
-
-      {/* ========================================
-          OPÇÕES AUXILIARES
-          ======================================== */}
-      
-      {/**
-       * LINHA DE OPÇÕES
-       * 
-       * Container horizontal que organiza:
-       * - Checkbox "Lembrar senha" (esquerda)
-       * - Link "Esqueci minha senha" (direita)
-       * 
-       * Layout flexível com justificação space-between.
-       */}
-      <View style={styles.optionsRow}>
+      <View style={styles.content}>
         
         {/* ========================================
-            OPÇÃO LEMBRAR SENHA
+            CABEÇALHO DA TELA
             ======================================== */}
         
         {/**
-         * CONTAINER DO CHECKBOX
+         * TÍTULO PRINCIPAL
          * 
-         * Agrupa checkbox e texto em layout horizontal.
-         * Flex 1 para ocupar espaço disponível do lado esquerdo.
+         * "Acesse" em fonte heroica para impacto visual.
+         * Primeira informação que chama atenção do usuário.
+         * Fonte grande e negrito seguindo hierarquia visual.
          */}
-        <View style={styles.checkboxContainer}>
+        <Text style={styles.title}>Acesse</Text>
 
-          {/**
-           * CHECKBOX LEMBRAR SENHA
-           * 
-           * Componente da biblioteca React Native Paper.
-           * 
-           * Estados:
-           * - 'checked': quando isChecked = true
-           * - 'unchecked': quando isChecked = false
-           * 
-           * Funcionalidade:
-           * - onPress alterna o estado booleano
-           * - Cor temática primary quando ativo
-           * 
-           * Implementação futura:
-           * - Persistir estado no AsyncStorage
-           * - Integrar com sistema de keychain
-           * - Considerar políticas de segurança
-           */}
-          <Checkbox
-            status={isChecked ? 'checked' : 'unchecked'}
-            onPress={() => setIsChecked(!isChecked)}
-            color={colors.primary}
-          />
+        {/**
+         * SUBTÍTULO EXPLICATIVO
+         * 
+         * "com E-mail e senha" complementa o título principal.
+         * Esclarece o método de autenticação disponível.
+         * Fonte menor e peso regular para hierarquia secundária.
+         */}
+        <Text style={styles.subtitle}>com E-mail e senha</Text>
 
-          {/**
-           * TEXTO DO CHECKBOX
-           * 
-           * Label explicativo ao lado do checkbox.
-           * Fonte pequena com cor secundária.
-           * Margem esquerda para espaçamento do checkbox.
-           */}
-          <Text style={styles.checkboxText}>Lembrar senha</Text>
-        </View>
+        {/* ========================================
+            FORMULÁRIO DE CREDENCIAIS
+            ======================================== */}
         
+        {/**
+         * SEÇÃO DE EMAIL/USUÁRIO
+         * 
+         * Label + campo de entrada para identificação do usuário.
+         * Aceita tanto email quanto username conforme validação.
+         */
+        
+        /**
+         * LABEL DO CAMPO EMAIL
+         * 
+         * Texto descritivo acima do campo de entrada.
+         * Fonte pequena/média com peso médio para legibilidade.
+         */}
+        <Text style={styles.inputText}>E-mail</Text>
+        
+        {/**
+         * CAMPO DE ENTRADA - EMAIL/USUÁRIO
+         * 
+         * TextInput controlado para captura do identificador.
+         * 
+         * Características:
+         * - Valor controlado pelo estado 'username'
+         * - Placeholder orientativo
+         * - Cor de placeholder temática
+         * - Atualização em tempo real via onChangeText
+         * 
+         * Funcionalidades futuras:
+         * - Validação de formato de email
+         * - Autocomplete de usuários anteriores
+         * - Verificação de existência em tempo real
+         */}
+        <TextInput
+          style={styles.input}
+          value={username}
+          onChangeText={setUsername}
+          placeholder="Digite seu E-mail"
+          placeholderTextColor={colors.text.placeholder}
+        />
+
+        {/**
+         * SEÇÃO DE SENHA
+         * 
+         * Label + campo seguro para senha do usuário.
+         * Campo oculto com opção de revelação (futuro).
+         */
+        
+        /**
+         * LABEL DO CAMPO SENHA
+         * 
+         * Texto descritivo para o campo de senha.
+         * Mesmo estilo do label de email para consistência.
+         */}
+        <Text style={styles.inputText}>Senha</Text>
+        
+        {/**
+         * CAMPO DE ENTRADA - SENHA
+         * 
+         * TextInput seguro para captura da senha.
+         * 
+         * Características especiais:
+         * - secureTextEntry: oculta texto digitado
+         * - Valor controlado pelo estado 'password'
+         * - Placeholder orientativo
+         * - Cor de placeholder temática
+         * 
+         * Funcionalidades futuras:
+         * - Botão de mostrar/ocultar senha
+         * - Indicador de força da senha
+         * - Validação de critérios de segurança
+         * - Autocomplete desabilitado por segurança
+         */}
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Digite sua senha"
+          placeholderTextColor={colors.text.placeholder}
+          secureTextEntry
+        />
+
         {/* ========================================
             LINK ESQUECI SENHA
             ======================================== */}
-
-        {/**
-         * BOTÃO ESQUECI SENHA
-         * 
-         * TouchableOpacity para navegação para recuperação.
-         * 
-         * Características:
-         * - Texto em cor primary para destaque
-         * - Fonte média para legibilidade
-         * - Alinhado à direita da linha
-         * 
-         * Funcionalidade futura:
-         * - Navegar para tela de recuperação
-         * - Modal de inserção de email
-         * - Envio de email de reset
-         * - Validação de código de verificação
-         */}
-        <TouchableOpacity>
-          <Text style={styles.forgot}>Esqueci minha senha</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* ========================================
-          BOTÕES DE AÇÃO PRINCIPAIS
-          ======================================== */}
-      
-      {/**
-       * LINHA DE BOTÕES
-       * 
-       * Container horizontal com os dois botões principais:
-       * - Acessar (primary): efetua login
-       * - Cadastrar (secondary): navega para registro
-       * 
-       * Layout flexível com gap uniforme entre botões.
-       */}
-      <View style={styles.buttonRow}>
         
         {/**
-         * BOTÃO ACESSAR (PRIMARY)
+         * CONTAINER DO LINK ESQUECI SENHA
          * 
-         * Botão principal que executa a função de login.
-         * 
-         * Características visuais:
-         * - Fundo verde (cor primary)
-         * - Texto branco para contraste
-         * - Sombra média para elevação
-         * - Bordas arredondadas
-         * - Flex 1 para ocupar metade do espaço
-         * 
-         * Funcionalidade:
-         * - onPress executa handleLogin
-         * - Valida credenciais inseridas
-         * - Feedback via alert (temporário)
-         * 
-         * Melhorias futuras:
-         * - Loading state durante validação
-         * - Desabilitar durante processamento
-         * - Animação de feedback
-         * - Haptic feedback
+         * Posicionado à direita para manter design limpo.
          */}
-        <TouchableOpacity style={styles.primaryButton} onPress={handleLogin}>
-          <Text style={styles.primaryButtonText}>Acessar</Text>
-        </TouchableOpacity>
+        <View style={styles.forgotContainer}>
+          {/**
+           * BOTÃO ESQUECI SENHA
+           * 
+           * TouchableOpacity para navegação para recuperação.
+           * 
+           * Características:
+           * - Texto em cor primary para destaque
+           * - Fonte média para legibilidade
+           * - Alinhado à direita
+           * 
+           * Funcionalidade futura:
+           * - Navegar para tela de recuperação
+           * - Modal de inserção de email
+           * - Envio de email de reset
+           * - Validação de código de verificação
+           */}
+          <TouchableOpacity>
+            <Text style={styles.forgot}>Esqueci minha senha</Text>
+          </TouchableOpacity>
+        </View>
 
+        {/* ========================================
+            BOTÕES DE AÇÃO PRINCIPAIS
+            ======================================== */}
+        
         {/**
-         * BOTÃO CADASTRAR (SECONDARY)
+         * LINHA DE BOTÕES
          * 
-         * Botão secundário para navegação para registro.
+         * Container horizontal com os dois botões principais:
+         * - Acessar (primary): efetua login
+         * - Cadastrar (secondary): navega para registro
          * 
-         * Características visuais:
-         * - Fundo branco com borda verde
-         * - Texto verde (cor primary)
-         * - Sem sombra (mais sutil)
-         * - Bordas arredondadas
-         * - Flex 1 para ocupar metade do espaço
-         * 
-         * Funcionalidade futura:
-         * - Navegar para tela de registro
-         * - Preservar dados já inseridos
-         * - Pré-preencher email se válido
+         * Layout flexível com gap uniforme entre botões.
          */}
-        <TouchableOpacity style={styles.secondaryButton}>
-          <Text style={styles.secondaryButtonText}>Cadastrar</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.buttonRow}>
+          
+          {/**
+           * BOTÃO ACESSAR (PRIMARY)
+           * 
+           * Botão principal que executa a função de login.
+           * 
+           * Características visuais:
+           * - Fundo verde (cor primary)
+           * - Texto branco para contraste
+           * - Sombra média para elevação
+           * - Bordas arredondadas
+           * - Flex 1 para ocupar metade do espaço
+           * 
+           * Funcionalidade:
+           * - onPress executa handleLogin
+           * - Valida credenciais inseridas
+           * - Feedback via alert (temporário)
+           * 
+           * Melhorias futuras:
+           * - Loading state durante validação
+           * - Desabilitar durante processamento
+           * - Animação de feedback
+           * - Haptic feedback
+           */}
+          <TouchableOpacity style={styles.primaryButton} onPress={handleLogin}>
+            <Text style={styles.primaryButtonText}>Acessar</Text>
+          </TouchableOpacity>
 
-      {/* ========================================
-          SEPARADOR VISUAL
-          ======================================== */}
-      
-      {/**
-       * SEPARADOR "OU CONTINUE COM"
-       * 
-       * Elemento visual que divide login tradicional de social.
-       * 
-       * Estrutura:
-       * - Linha esquerda (flex)
-       * - Texto central
-       * - Linha direita (flex)
-       * 
-       * Design elegante comum em telas de autenticação.
-       */}
-      <View style={styles.separator}>
-        <View style={styles.line} />
-        <Text style={styles.separatorText}>Ou continue com</Text>
-        <View style={styles.line} />
-      </View>
-
-      {/* ========================================
-          LOGIN SOCIAL
-          ======================================== */}
-      
-      {/**
-       * LINHA DE BOTÕES SOCIAIS
-       * 
-       * Container horizontal centralizado com botões de:
-       * - Google
-       * - Facebook
-       * 
-       * Layout com gap uniforme entre botões.
-       * Justificação central para simetria visual.
-       */}
-      <View style={styles.socialRow}>
-
-        {/**
-         * BOTÃO GOOGLE
-         * 
-         * Botão quadrado com logo do Google.
-         * 
-         * Características:
-         * - Dimensões fixas (60x60)
-         * - Fundo branco com borda sutil
-         * - Logo oficial do Google
-         * - Sombra pequena para elevação
-         * 
-         * Funcionalidade futura:
-         * - Integração com Google Sign-In
-         * - Gerenciamento de tokens OAuth
-         * - Sincronização de dados do perfil
-         */}
-        <TouchableOpacity style={styles.socialButton}>
-          <Image
-            source={require('../assets/Google.png')}
-            style={styles.socialIcon}
-          />
-        </TouchableOpacity>
-
-        {/**
-         * BOTÃO FACEBOOK
-         * 
-         * Botão quadrado com logo do Facebook.
-         * 
-         * Características:
-         * - Dimensões fixas (60x60)
-         * - Fundo branco com borda sutil
-         * - Logo oficial do Facebook
-         * - Sombra pequena para elevação
-         * 
-         * Funcionalidade futura:
-         * - Integração com Facebook Login
-         * - Gerenciamento de permissões
-         * - Importação de dados básicos
-         */}
-        <TouchableOpacity style={styles.socialButton}>
-          <Image
-            source={require('../assets/Facebook.png')}
-            style={styles.socialIcon}
-          />
-        </TouchableOpacity>
+          {/**
+           * BOTÃO CADASTRAR (SECONDARY)
+           * 
+           * Botão secundário para navegação para registro.
+           * 
+           * Características visuais:
+           * - Fundo branco com borda verde
+           * - Texto verde (cor primary)
+           * - Sem sombra (mais sutil)
+           * - Bordas arredondadas
+           * - Flex 1 para ocupar metade do espaço
+           * 
+           * Funcionalidade futura:
+           * - Navegar para tela de registro
+           * - Preservar dados já inseridos
+           * - Pré-preencher email se válido
+           */}
+          <TouchableOpacity 
+            style={styles.secondaryButton}
+            onPress={() => navigation.navigate('Cadastro')}
+          >
+            <Text style={styles.secondaryButtonText}>Cadastrar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -592,42 +444,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,                                  // Altura total disponível
     backgroundColor: colors.background,       // Fundo neutro do tema
+  },
+  
+  /**
+   * CONTAINER DO CONTEÚDO
+   * 
+   * Container para o conteúdo da tela, com padding adequado.
+   */
+  content: {
+    flex: 1,
     paddingHorizontal: spacing.lg,            // Margem lateral generous
-    paddingTop: spacing.xxl,                  // Safe area + espaçamento
+
   },
   
   // ========================================
   // HEADER DE NAVEGAÇÃO
   // ========================================
   
-  // Header secundário com navegação e título
+  // Header secundário com navegação
   navigationHeader: {
-    paddingHorizontal: spacing.lg, // Padding lateral consistente
-    paddingVertical: spacing.md, // Padding vertical para separação
-    backgroundColor: colors.surface, // Fundo branco limpo
     flexDirection: 'row', // Layout horizontal
-    justifyContent: 'space-between', // Distribui espaço entre elementos
     alignItems: 'center', // Alinha elementos verticalmente no centro
-    marginHorizontal: -spacing.lg, // Compensa padding do container
-    shadowColor: 'rgba(0, 0, 0, 0.1)', // Sombra sutil
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  
-  // Título do header de navegação
-  navigationTitle: {
-    fontSize: fonts.sizes.lg, // Tamanho de fonte médio-grande
-    fontFamily: 'Poppins-SemiBold', // Peso semi-bold
-    color: colors.text.primary, // Cor primária do texto
-    flex: 1, // Ocupa espaço disponível
-    textAlign: 'center', // Centraliza o texto
-  },
-  
-  // Placeholder para manter layout simétrico
-  placeholder: {
-    width: 40, // Mesma largura do BackButton
   },
   
   // ========================================
@@ -735,59 +572,18 @@ const styles = StyleSheet.create({
   },
   
   // ========================================
-  // LINHA DE OPÇÕES
+  // LINK ESQUECI SENHA
   // ========================================
   
   /**
-   * CONTAINER DA LINHA DE OPÇÕES
+   * CONTAINER DO LINK ESQUECI SENHA
    * 
-   * Layout horizontal que organiza checkbox e link de recuperação.
-   * 
-   * Características:
-   * - Layout flexbox horizontal
-   * - Justificação space-between para extremidades
-   * - Alinhamento vertical central
-   * - Margem inferior para separação dos botões
+   * Container para posicionar o link à direita.
    */
-  optionsRow: {
-    flexDirection: 'row',                     // Layout horizontal
-    justifyContent: 'space-between',          // Elementos nas extremidades
-    alignItems: 'center',                     // Alinhamento vertical central
+  forgotContainer: {
+    alignItems: 'flex-end',                   // Alinha à direita
     marginBottom: spacing.xl,                 // Separação dos botões
-  },
-  
-  /**
-   * CONTAINER DO CHECKBOX
-   * 
-   * Agrupa checkbox e seu texto em layout horizontal.
-   * 
-   * Características:
-   * - Layout flexbox horizontal
-   * - Alinhamento vertical central
-   * - Flex 1 para ocupar espaço disponível
-   */
-  checkboxContainer: {
-    flexDirection: 'row',                     // Layout horizontal
-    alignItems: 'center',                     // Alinhamento vertical central
-    flex: 1,                                  // Ocupar espaço disponível
-  },
-  
-  /**
-   * TEXTO DO CHECKBOX
-   * 
-   * Label explicativo ao lado do checkbox "Lembrar senha".
-   * 
-   * Características:
-   * - Tamanho pequeno para não dominar visualmente
-   * - Fonte Poppins Regular para consistência
-   * - Cor secundária para menor destaque
-   * - Margem esquerda para espaçamento do checkbox
-   */
-  checkboxText: {
-    fontSize: fonts.sizes.sm,                 // Tamanho pequeno
-    fontFamily: getFontFamily('Poppins', 'Regular'), // Fonte regular
-    color: colors.text.secondary,             // Cor secundária
-    marginLeft: spacing.xs,                   // Espaçamento do checkbox
+    marginTop: spacing.sm,                    // Pequeno espaço após campo senha
   },
   
   /**
@@ -822,13 +618,11 @@ const styles = StyleSheet.create({
    * Características:
    * - Layout flexbox horizontal
    * - Justificação space-between para distribuição
-   * - Margem inferior para separação do separador
    * - Gap uniforme entre botões
    */
   buttonRow: {
     flexDirection: 'row',                     // Layout horizontal
     justifyContent: 'space-between',          // Distribuição uniforme
-    marginBottom: spacing.xl,                 // Separação do separador
     gap: spacing.md,                          // Espaçamento entre botões
   },
   
@@ -913,129 +707,5 @@ const styles = StyleSheet.create({
     color: colors.primary,                    // Verde para harmonizar
     fontSize: fonts.sizes.md,                 // Tamanho médio
     fontFamily: getFontFamily('Poppins', 'SemiBold'), // Semi-negrito
-  },
-  
-  // ========================================
-  // SEPARADOR VISUAL
-  // ========================================
-  
-  /**
-   * CONTAINER DO SEPARADOR
-   * 
-   * Layout horizontal que cria o efeito "--- Ou continue com ---".
-   * 
-   * Características:
-   * - Layout flexbox horizontal
-   * - Alinhamento vertical central
-   * - Margem inferior para separação do login social
-   */
-  separator: {
-    flexDirection: 'row',                     // Layout horizontal
-    alignItems: 'center',                     // Alinhamento vertical central
-    marginBottom: spacing.xl,                 // Separação do login social
-  },
-  
-  /**
-   * LINHAS DO SEPARADOR
-   * 
-   * Elementos visuais que criam as linhas laterais.
-   * 
-   * Características:
-   * - Flex 1 para ocupar espaço disponível
-   * - Altura mínima (1px) para linha sutil
-   * - Cor accent para harmonia com tema
-   */
-  line: {
-    flex: 1,                                  // Ocupar espaço disponível
-    height: 1,                                // Linha sutil
-    backgroundColor: colors.accent,           // Cor temática
-  },
-  
-  /**
-   * TEXTO DO SEPARADOR
-   * 
-   * "Ou continue com" centralizado entre as linhas.
-   * 
-   * Características:
-   * - Margem horizontal para espaçamento das linhas
-   * - Tamanho pequeno para não dominar visualmente
-   * - Fonte Montserrat Regular para distinção
-   * - Cor light para menor destaque
-   */
-  separatorText: {
-    marginHorizontal: spacing.md,             // Espaçamento das linhas
-    fontSize: fonts.sizes.sm,                 // Tamanho pequeno
-    fontFamily: getFontFamily('Montserrat', 'Regular'), // Fonte Montserrat
-    color: colors.text.light,                 // Cor light para sutileza
-  },
-  
-  // ========================================
-  // LOGIN SOCIAL
-  // ========================================
-  
-  /**
-   * LINHA DOS BOTÕES SOCIAIS
-   * 
-   * Container horizontal centralizado para botões Google e Facebook.
-   * 
-   * Características:
-   * - Layout flexbox horizontal
-   * - Justificação central para simetria
-   * - Gap uniforme entre botões
-   */
-  socialRow: {
-    flexDirection: 'row',                     // Layout horizontal
-    justifyContent: 'center',                 // Centralização
-    gap: spacing.lg,                          // Espaçamento uniforme
-  },
-  
-  /**
-   * BOTÕES SOCIAIS INDIVIDUAIS
-   * 
-   * Estilo base para botões Google e Facebook.
-   * 
-   * Características visuais:
-   * - Dimensões fixas quadradas (60x60)
-   * - Bordas arredondadas médias
-   * - Fundo branco (surface)
-   * - Borda sutil colorida
-   * - Centralização do ícone
-   * - Sombra pequena para elevação sutil
-   * 
-   * Design:
-   * - Tamanho adequado para toque confortável
-   * - Aspecto profissional e limpo
-   * - Harmonia com resto da interface
-   */
-  socialButton: {
-    width: 60,                                // Largura fixa
-    height: 60,                               // Altura fixa (quadrado)
-    borderRadius: borderRadius.md,            // Bordas arredondadas
-    backgroundColor: colors.surface,          // Fundo branco
-    borderColor: colors.accent,               // Borda sutil
-    borderWidth: 1,                           // Espessura da borda
-    justifyContent: 'center',                 // Centralização vertical
-    alignItems: 'center',                     // Centralização horizontal
-    ...shadows.small,                         // Sombra pequena
-  },
-  
-  /**
-   * ÍCONES SOCIAIS
-   * 
-   * Logos do Google e Facebook dentro dos botões.
-   * 
-   * Características:
-   * - Dimensões proporcionais (30x30)
-   * - Modo de redimensionamento 'contain'
-   * - Preservação da proporção original
-   * 
-   * Assets:
-   * - Google.png: Logo oficial do Google
-   * - Facebook.png: Logo oficial do Facebook
-   */
-  socialIcon: {
-    width: 30,                                // Largura proporcional
-    height: 30,                               // Altura proporcional
-    resizeMode: 'contain',                    // Preservar proporção
   },
 });

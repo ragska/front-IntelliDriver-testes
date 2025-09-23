@@ -20,10 +20,12 @@ import { useFontLoader } from './src/hooks/useFontLoader';
 // ========================================
 
 // Importação de todas as telas da aplicação que serão navegáveis
+import Welcome from './src/screens/Welcome';                // Tela de entrada/boas-vindas
+import Login from './src/screens/Login';                    // Tela de autenticação
+import Cadastro from './src/screens/Cadastro';             // Tela de cadastro
 import Home from './src/screens/Home';                      // Tela inicial/dashboard
 import Activity from './src/screens/Activity';              // Tela de atividades/percursos
 import Historico from './src/screens/Historico';            // Tela de histórico de viagens
-import Login from './src/screens/Login';                    // Tela de autenticação
 import PercursoDetalhes from './src/screens/PercursoDetalhes'; // Tela de detalhes de um percurso específico
 import CarsAnalytics from './src/screens/CarsAnalytics';    // Tela de diagnóstico do veículo
 import DadosPessoais from './src/screens/DadosPessoais';    // Tela de dados pessoais do usuário
@@ -132,13 +134,22 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="Home"           // Tela inicial quando app abre
+        initialRouteName="Welcome"           // Tela de boas-vindas como inicial
         screenOptions={{ headerShown: false }}  // Remove header nativo de todas as telas
       >
         
         {/* ========================================
             DEFINIÇÃO DE TODAS AS ROTAS/TELAS
             ======================================== */}
+        
+        {/* Tela de entrada/boas-vindas com opções de login ou cadastro */}
+        <Stack.Screen name="Welcome" component={Welcome} />
+        
+        {/* Tela de login e autenticação */}
+        <Stack.Screen name="Login" component={Login} />
+        
+        {/* Tela de cadastro de novos usuários */}
+        <Stack.Screen name="Cadastro" component={Cadastro} />
         
         {/* Tela principal/dashboard da aplicação */}
         <Stack.Screen name="Home" component={Home} />
@@ -148,9 +159,6 @@ export default function App() {
         
         {/* Tela de histórico de viagens do usuário */}
         <Stack.Screen name="Historico" component={Historico} />
-        
-        {/* Tela de login e autenticação */}
-        <Stack.Screen name="Login" component={Login} />
         
         {/* Tela de detalhes específicos de um percurso */}
         <Stack.Screen name="PercursoDetalhes" component={PercursoDetalhes} />

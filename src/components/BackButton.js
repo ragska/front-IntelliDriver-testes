@@ -35,7 +35,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
  * Componente reutilizável que pode ser posicionado em qualquer tela.
  * 
  * Características:
- * - Posicionamento absoluto no canto superior esquerdo
+ * - Posicionamento flexível (absoluto ou relativo)
  * - Design circular com sombra sutil
  * - Ícone de seta intuitivo
  * - Funcionalidade universal de retorno
@@ -47,9 +47,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
  * - Telas secundárias
  * - Modais em tela cheia
  * 
+ * @param {Function} onPress - Função personalizada de retorno (opcional)
+ * @param {Object} style - Estilos personalizados (opcional)
  * @returns {JSX.Element} - Botão de voltar renderizado
  */
-export default function BackButton() {
+export default function BackButton({ onPress, style }) {
   
   // ========================================
   // HOOK DE NAVEGAÇÃO
@@ -68,6 +70,19 @@ export default function BackButton() {
    */
   const navigation = useNavigation();
 
+  /**
+   * FUNÇÃO DE RETORNO
+   * 
+   * Usa função personalizada se fornecida, senão usa navigation.goBack()
+   */
+  const handlePress = () => {
+    if (onPress) {
+      onPress();
+    } else {
+      navigation.goBack();
+    }
+  };
+
   // ========================================
   // RENDERIZAÇÃO DA INTERFACE
   // ========================================
@@ -80,8 +95,8 @@ export default function BackButton() {
    */
   return (
     <TouchableOpacity 
-      style={styles.backButton} 
-      onPress={() => navigation.goBack()}  // Função de retorno ao toque
+      style={[styles.backButton, style]} 
+      onPress={handlePress}  // Função de retorno personalizada ou padrão
     >
       {/* ========================================
           ÍCONE DE SETA PARA ESQUERDA
