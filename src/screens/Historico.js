@@ -7,40 +7,32 @@ import Calendario from '../components/Calendario';
 import EcoCoinIcon from '../assets/ecocoin-icon';
 import { getPercursosByDate, formatDateToString, getTodayString } from '../data/percursosData';
 
+/**
+ * Tela de Histórico - Exibe percursos realizados organizados por data
+ * Permite alternar entre visualização semanal e mensal
+ */
 export default function Historico() {
   const navigation = useNavigation();
-  // Estado para controlar tipo de visualização do calendário (semanal vs mensal)
-  // true = visualização semanal (padrão), false = visualização mensal
-  const [isWeeklyView, setIsWeeklyView] = useState(true); // Inicia com visualização semanal
-  // Estado para armazenar data selecionada pelo usuário, inicializa com data atual
-  const [selectedDate, setSelectedDate] = useState(getTodayString()); // Data selecionada (hoje por padrão)
-  // Estado para armazenar lista de percursos filtrados pela data selecionada
-  // Estado para armazenar lista de percursos filtrados pela data selecionada
-  const [percursos, setPercursos] = useState(getPercursosByDate(getTodayString())); // Percursos da data selecionada
+  
+  // Estados para controle da interface
+  const [isWeeklyView, setIsWeeklyView] = useState(true); // Controla tipo de visualização do calendário
+  const [selectedDate, setSelectedDate] = useState(getTodayString()); // Data atualmente selecionada
+  const [percursos, setPercursos] = useState(getPercursosByDate(getTodayString())); // Lista de percursos filtrados
 
-  // Função para manipular seleção de dia no calendário
-  // Atualiza data selecionada e carrega percursos correspondentes
+  // Manipula seleção de data no calendário
   const handleDayPress = (day) => {
-    // Converte objeto de data para string no formato adequado
     const dateString = formatDateToString(day);
     if (dateString) {
-      // Atualiza estado da data selecionada
       setSelectedDate(dateString);
-      // Busca e atualiza percursos para a nova data
-      setPercursos(getPercursosByDate(dateString));
+      setPercursos(getPercursosByDate(dateString)); // Atualiza percursos para nova data
       console.log('Data selecionada:', dateString);
     }
   };
 
-  // Função para formatação de data para exibição amigável ao usuário
-  // Converte string de data em formato legível em português brasileiro
   const formatDisplayDate = (dateString) => {
-    // Retorna mensagem padrão se não há data selecionada
     if (!dateString) return 'Selecione uma data';
     
-    // Cria objeto Date adicionando horário para evitar problemas de timezone
     const date = new Date(dateString + 'T00:00:00');
-    // Retorna data formatada com dia da semana, dia, mês e ano por extenso
     return date.toLocaleDateString('pt-BR', {
       weekday: 'long',
       year: 'numeric',
@@ -49,46 +41,36 @@ export default function Historico() {
     });
   };
 
-  // Função para navegação para tela de detalhes do percurso
-  // Passa dados do percurso e data selecionada como parâmetros
+  // Navega para detalhes do percurso
   const handleItemPress = (item) => {
     navigation.navigate('PercursoDetalhes', { 
-      // Combina dados do item com data selecionada para contexto completo
       percurso: { ...item, selectedDate } 
     });
   };
 
-  // Função de renderização para cada item de percurso na lista
-  // Cria layout completo com agrupamento por horário e informações detalhadas
+  // Renderiza cada item da lista de percursos
   const renderPercursoItem = ({ item, index }) => {
-    // Extrai valor de EcoCoins com fallback para 0
     const ecoCoins = item.ecoCoins || 0;
-    // Determina se valor é negativo para estilização diferenciada
     const isNegative = ecoCoins < 0;
-    // Verifica se deve exibir header de horário (primeiro item ou mudança de horário)
-    // Verifica se deve exibir header de horário (primeiro item ou mudança de horário)
     const showTimeHeader = index === 0 || percursos[index - 1]?.horario !== item.horario;
     
     return (
       <View>
-        {/* Divisor de horário para agrupamento visual de percursos */}
+        {/* Header de horário para agrupar percursos */}
         {showTimeHeader && (
           <View style={[styles.timeHeader, index === 0 && styles.firstTimeHeader]}>
             <Text style={styles.timeHeaderText}>{item.horario}</Text>
           </View>
         )}
         
-        {/* Item principal do percurso com informações completas */}
         <TouchableOpacity style={styles.item} onPress={() => handleItemPress(item)}>
-          {/* Imagem representativa do percurso */}
           <Image source={{ uri: item.img }} style={styles.img} />
           <View style={styles.itemContent}>
-            {/* Linha superior com nome e distância */}
             <View style={styles.itemTopRow}>
               <Text style={styles.itemText}>{item.nome}</Text>
               <Text style={styles.itemDistance}>{item.distancia}</Text>
             </View>
-            {/* Container de EcoCoins com estilização baseada em valor positivo/negativo */}
+            {/* EcoCoins com estilização baseada em ganho/perda */}
             <View style={[
               styles.ecoCoinsContainer,
               isNegative ? styles.ecoCoinsContainerNegative : styles.ecoCoinsContainerPositive
@@ -98,11 +80,9 @@ export default function Historico() {
                 styles.ecoCoinsText,
                 isNegative ? styles.ecoCoinsTextNegative : styles.ecoCoinsTextPositive
               ]}>
-                {/* Formatação de valor com sinal + para positivos */}
                 {isNegative ? ecoCoins : `+${ecoCoins}`} EcoCoins
               </Text>
             </View>
-            {/* Indicador visual para ação de toque */}
             <View style={styles.viewMoreContainer}>
               <Text style={styles.viewMoreText}>Toque para ver detalhes ›</Text>
             </View>
@@ -112,10 +92,10 @@ export default function Historico() {
     );
   };
 
-  // Componente de cabeçalho da lista com calendário condicional e estados vazios
+  // Componente de cabeçalho da lista com calendário e estados vazios
   const ListHeaderComponent = () => (
     <View style={styles.listHeader}>
-      {/* Calendário exibido apenas em visualização mensal */}
+      {/* Calendário exibido apenas na visualização mensal */}
       {!isWeeklyView && (
         <View style={styles.calendarInHeader}>
           <Calendario 
@@ -125,9 +105,8 @@ export default function Historico() {
           />
         </View>
       )}
-      {/* Divisor visual para separação do conteúdo */}
       <View style={styles.divider} />
-      {/* Mensagem de estado vazio quando não há percursos */}
+      {/* Mensagem quando não há percursos */}
       {percursos.length === 0 && (
         <Text style={styles.noDataText}>
           Nenhum percurso encontrado para esta data
@@ -136,17 +115,14 @@ export default function Historico() {
     </View>
   );
 
-  // Estrutura principal da tela de histórico
   return (
     <View style={styles.mainContainer}>
-      {/* Header com logo centralizada - ocupando toda a largura */}
       <Header />
       
       <View style={styles.container}>
-        {/* Título principal da tela */}
         <Text style={styles.title}>Histórico</Text>
       
-      {/* Botões alternadores para visualização semanal/mensal */}
+      {/* Botões para alternar entre visualização semanal/mensal */}
       <View style={styles.toggleContainer}>
         <TouchableOpacity
           style={[styles.toggleButton, styles.leftButton, isWeeklyView && styles.activeButton]}
@@ -162,7 +138,7 @@ export default function Historico() {
         </TouchableOpacity>
       </View>
 
-      {/* Calendário fixo exibido apenas para visualização semanal */}
+      {/* Calendário fixo para visualização semanal */}
       {isWeeklyView && (
         <View style={styles.calendarContainer}>
           <Calendario 
@@ -173,120 +149,77 @@ export default function Historico() {
         </View>
       )}
 
-      {/* Lista principal de percursos com configurações de performance */}
+      {/* Lista principal de percursos */}
       <FlatList
-        // Dados dos percursos filtrados por data
         data={percursos}
-        // Chave única para otimização de renderização
         keyExtractor={(item) => item.id}
-        // Função de renderização de cada item
         renderItem={renderPercursoItem}
-        // Componente de cabeçalho com calendário condicional
         ListHeaderComponent={ListHeaderComponent}
-        // Remove indicador de scroll para interface mais limpa
         showsVerticalScrollIndicator={false}
-        // Estilos do container do conteúdo
         contentContainerStyle={styles.listContent}
-        // Estilo da FlatList
         style={styles.flatList}
       />
-      {/* Navegação inferior fixa */}
       <NavBar />
       </View>
     </View>
   );
 }
 
-// Definição de estilos usando StyleSheet para otimização de performance
-// Centraliza todos os estilos do componente Historico com tema verde eco-friendly
 const styles = StyleSheet.create({
-  // Container principal sem padding para header ocupar toda largura
   mainContainer: {
     flex: 1,
     backgroundColor: '#F8F9F7',
   },
 
-  // Container principal ocupando toda a tela com fundo claro
   container: { 
     flex: 1, 
-    // Cor de fundo suave em tom verde claro para identidade visual
     backgroundColor: '#F8F9F7',
-    // Padding horizontal padrão para margens laterais
     paddingHorizontal: 24,
   },
 
-  // Estilo do título principal "Histórico"
   title: { 
-    // Tamanho grande para título principal
     fontSize: 32,
-    // Peso bold para destaque e hierarquia
     fontWeight: 'bold',
-    // Cor verde escura para identidade da marca
     color: '#2A3C1A',
-    // Margem superior para espaçamento do header
     marginTop: 16,
-    // Margem inferior para espaçamento do conteúdo
     marginBottom: 24,
   },
-  // Container dos botões de alternância semanal/mensal
   toggleContainer: {
-    // Layout horizontal para os dois botões
     flexDirection: 'row',
-    // Fundo branco para contraste
     backgroundColor: '#FFFFFF',
-    // Bordas bem arredondadas para aparência moderna
     borderRadius: 25,
-    // Padding interno para espaçamento dos botões
     padding: 4,
-    // Margem inferior para separação do calendário
     marginBottom: 8,
-    // Configurações de sombra para elevação sutil
     shadowColor: 'rgba(42, 60, 26, 0.1)',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
-  // Estilo base para botões de alternância
   toggleButton: {
-    // Ocupa metade do espaço disponível
     flex: 1,
-    // Padding vertical para área de toque adequada
     paddingVertical: 8,
-    // Padding horizontal para espaçamento do texto
     paddingHorizontal: 16,
-    // Centraliza conteúdo horizontalmente
     alignItems: 'center',
-    // Centraliza conteúdo verticalmente
     justifyContent: 'center',
   },
-  // Bordas arredondadas específicas para botão esquerdo
   leftButton: {
     borderTopLeftRadius: 25,
     borderBottomLeftRadius: 25,
   },
-  // Bordas arredondadas específicas para botão direito
   rightButton: {
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
   },
-  // Estilo para botão ativo/selecionado
   activeButton: {
-    // Fundo verde para indicar seleção
     backgroundColor: '#7F9170',
   },
-  // Texto dos botões de alternância
   toggleText: {
-    // Tamanho pequeno para texto de botão
     fontSize: 12,
-    // Peso medium para legibilidade
     fontWeight: '500',
-    // Cor verde escura para texto não selecionado
     color: '#51663E',
   },
-  // Texto do botão ativo
   activeText: {
-    // Cor branca para contraste com fundo verde
     color: '#FFFFFF',
   },
   calendarContainer: {

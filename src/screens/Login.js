@@ -39,14 +39,14 @@ export default function Login({ navigation }) {
       
       <View style={styles.content}>
         <Text style={styles.title}>Acesse</Text>
-        <Text style={styles.subtitle}>com E-mail e senha</Text>
+        <Text style={styles.subtitle}>com nome de usuário e senha</Text>
 
-        <Text style={styles.inputText}>E-mail</Text>
+        <Text style={styles.inputText}>Nome de Usuário</Text>
         <TextInput
           style={styles.input}
           value={username}
           onChangeText={setUsername}
-          placeholder="Digite seu E-mail"
+          placeholder="Digite seu nome de usuário"
           placeholderTextColor={colors.text.placeholder}
         />
 

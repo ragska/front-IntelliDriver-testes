@@ -4,7 +4,10 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Alert
 } from 'react-native';
 import Header from '../components/Header';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,6 +22,15 @@ export default function CarsAnalytics({ navigation }) {
   
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [maintenanceModalVisible, setMaintenanceModalVisible] = useState(false);
+  const [maintenanceFormData, setMaintenanceFormData] = useState({
+    type: '',
+    description: '',
+    maintenanceDate: '',
+    nextMaintenanceDate: '',
+    priority: 'medium',
+    notes: ''
+  });
   
   const {
     bluetoothConnected,
@@ -35,6 +47,46 @@ export default function CarsAnalytics({ navigation }) {
       setLoading(false);
     }, 1000);
   }, []);
+
+  // Funções do modal de manutenção
+  const openMaintenanceModal = () => {
+    setMaintenanceModalVisible(true);
+  };
+
+  const closeMaintenanceModal = () => {
+    setMaintenanceModalVisible(false);
+    setMaintenanceFormData({
+      type: '',
+      description: '',
+      maintenanceDate: '',
+      nextMaintenanceDate: '',
+      priority: 'medium',
+      notes: ''
+    });
+  };
+
+  const handleMaintenanceInputChange = (field, value) => {
+    setMaintenanceFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const validateAndSubmitMaintenance = () => {
+    if (!maintenanceFormData.type || !maintenanceFormData.maintenanceDate || !maintenanceFormData.nextMaintenanceDate) {
+      Alert.alert(
+        'Campos Obrigatórios',
+        'Por favor, preencha todos os campos obrigatórios: tipo de manutenção, data da manutenção e próxima manutenção.'
+      );
+      return;
+    }
+
+    Alert.alert(
+      'Manutenção Adicionada!',
+      `Manutenção "${maintenanceFormData.type}" realizada em ${maintenanceFormData.maintenanceDate} foi cadastrada com sucesso.`,
+      [{ text: 'OK', onPress: closeMaintenanceModal }]
+    );
+  };
 
   // Componente do cartão de saúde do veículo
   const HealthScoreCard = ({ score, status }) => {
@@ -273,6 +325,17 @@ export default function CarsAnalytics({ navigation }) {
               </Text>
             </View>
           </View>
+
+          {/* Botão Adicionar Manutenção */}
+          <TouchableOpacity 
+            style={styles.addMaintenanceButton}
+            onPress={openMaintenanceModal}
+          >
+            <View style={styles.addButtonContent}>
+              <Ionicons name="add-circle" size={24} color={colors.primary} />
+              <Text style={styles.addButtonText}>Adicionar Manutenção</Text>
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* Seção: Alertas de manutenção */}
@@ -412,6 +475,152 @@ export default function CarsAnalytics({ navigation }) {
 
       <NavBar />
       </View>
+
+      {/* Modal de Adicionar Manutenção */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={maintenanceModalVisible}
+        onRequestClose={closeMaintenanceModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              
+              {/* Header do Modal */}
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Nova Manutenção</Text>
+                <TouchableOpacity 
+                  style={styles.closeButton}
+                  onPress={closeMaintenanceModal}
+                >
+                  <Ionicons name="close" size={24} color={colors.text.secondary} />
+                </TouchableOpacity>
+              </View>
+
+              {/* Formulário */}
+              <View style={styles.formContainer}>
+                
+                {/* Tipo de Manutenção */}
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.inputLabel, styles.requiredField]}>Tipo de Manutenção *</Text>
+                  <TextInput
+                    style={[styles.textInput, styles.requiredInput]}
+                    placeholder="Ex: Troca de óleo, Pastilhas de freio..."
+                    placeholderTextColor={colors.text.placeholder}
+                    value={maintenanceFormData.type}
+                    onChangeText={(value) => handleMaintenanceInputChange('type', value)}
+                  />
+                </View>
+
+                {/* Descrição */}
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Descrição</Text>
+                  <TextInput
+                    style={[styles.textInput, { height: 80 }]}
+                    placeholder="Descreva os detalhes da manutenção..."
+                    placeholderTextColor={colors.text.placeholder}
+                    value={maintenanceFormData.description}
+                    onChangeText={(value) => handleMaintenanceInputChange('description', value)}
+                    multiline={true}
+                    textAlignVertical="top"
+                  />
+                </View>
+
+                {/* Data da Manutenção */}
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.inputLabel, styles.requiredField]}>Data da Manutenção *</Text>
+                  <TextInput
+                    style={[styles.textInput, styles.requiredInput]}
+                    placeholder="DD/MM/AAAA"
+                    placeholderTextColor={colors.text.placeholder}
+                    value={maintenanceFormData.maintenanceDate}
+                    onChangeText={(value) => handleMaintenanceInputChange('maintenanceDate', value)}
+                    maxLength={10}
+                    keyboardType="numeric"
+                  />
+                </View>
+
+                {/* Próxima Manutenção */}
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.inputLabel, styles.requiredField]}>Próxima Manutenção *</Text>
+                  <TextInput
+                    style={[styles.textInput, styles.requiredInput]}
+                    placeholder="DD/MM/AAAA"
+                    placeholderTextColor={colors.text.placeholder}
+                    value={maintenanceFormData.nextMaintenanceDate}
+                    onChangeText={(value) => handleMaintenanceInputChange('nextMaintenanceDate', value)}
+                    maxLength={10}
+                    keyboardType="numeric"
+                  />
+                </View>
+
+                {/* Prioridade */}
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Prioridade</Text>
+                  <View style={styles.priorityContainer}>
+                    {['low', 'medium', 'high'].map((priority) => (
+                      <TouchableOpacity
+                        key={priority}
+                        style={[
+                          styles.priorityButton,
+                          maintenanceFormData.priority === priority && styles.priorityButtonActive
+                        ]}
+                        onPress={() => handleMaintenanceInputChange('priority', priority)}
+                      >
+                        <Text style={[
+                          styles.priorityText,
+                          maintenanceFormData.priority === priority && styles.priorityTextActive
+                        ]}>
+                          {priority === 'low' ? 'Baixa' : priority === 'medium' ? 'Média' : 'Alta'}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Observações */}
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Observações</Text>
+                  <TextInput
+                    style={[styles.textInput, { height: 80 }]}
+                    placeholder="Observações adicionais..."
+                    placeholderTextColor={colors.text.placeholder}
+                    value={maintenanceFormData.notes}
+                    onChangeText={(value) => handleMaintenanceInputChange('notes', value)}
+                    multiline={true}
+                    textAlignVertical="top"
+                  />
+                </View>
+
+                <Text style={styles.requiredNote}>* Campos obrigatórios</Text>
+              </View>
+
+              {/* Botões de Ação */}
+              <View style={styles.modalActions}>
+                <TouchableOpacity 
+                  style={styles.cancelButton}
+                  onPress={closeMaintenanceModal}
+                >
+                  <Text style={styles.cancelButtonText}>Cancelar</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  style={styles.saveButton}
+                  onPress={validateAndSubmitMaintenance}
+                >
+                  <LinearGradient
+                    colors={['#4CAF50', '#45A049']}
+                    style={styles.saveButtonGradient}
+                  >
+                    <Text style={styles.saveButtonText}>Salvar Manutenção</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -819,5 +1028,180 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: colors.surface,
     marginLeft: spacing.sm,
+  },
+
+  // Estilos do botão adicionar manutenção
+  addMaintenanceButton: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginTop: spacing.md,
+    borderWidth: 2,
+    borderColor: colors.primary + '30',
+    borderStyle: 'dashed',
+    ...shadows.small,
+  },
+
+  addButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+  },
+
+  addButtonText: {
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'Medium'),
+    color: colors.primary,
+  },
+
+  // Estilos do modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalContainer: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
+    margin: spacing.lg,
+    maxHeight: '90%',
+    width: '90%',
+    ...shadows.large,
+  },
+
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.text.placeholder + '20',
+  },
+
+  modalTitle: {
+    fontSize: fonts.sizes.xl,
+    fontFamily: getFontFamily('Poppins', 'SemiBold'),
+    color: colors.text.primary,
+  },
+
+  closeButton: {
+    padding: spacing.xs,
+  },
+
+  formContainer: {
+    padding: spacing.lg,
+  },
+
+  inputGroup: {
+    marginBottom: spacing.lg,
+  },
+
+  inputLabel: {
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'Medium'),
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
+  },
+
+  requiredField: {
+    color: colors.primary,
+  },
+
+  textInput: {
+    borderWidth: 1,
+    borderColor: colors.text.placeholder + '30',
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'Regular'),
+    color: colors.text.primary,
+    backgroundColor: colors.background,
+  },
+
+  requiredInput: {
+    borderColor: colors.primary + '50',
+    borderWidth: 2,
+  },
+
+  priorityContainer: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+
+  priorityButton: {
+    flex: 1,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.text.placeholder + '30',
+    alignItems: 'center',
+  },
+
+  priorityButtonActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+
+  priorityText: {
+    fontSize: fonts.sizes.sm,
+    fontFamily: getFontFamily('Poppins', 'Medium'),
+    color: colors.text.secondary,
+  },
+
+  priorityTextActive: {
+    color: colors.surface,
+  },
+
+  requiredNote: {
+    fontSize: fonts.sizes.sm,
+    fontFamily: getFontFamily('Poppins', 'Regular'),
+    color: colors.text.placeholder,
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginTop: spacing.md,
+  },
+
+  modalActions: {
+    flexDirection: 'row',
+    padding: spacing.lg,
+    gap: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.text.placeholder + '20',
+  },
+
+  cancelButton: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.text.placeholder + '50',
+    alignItems: 'center',
+  },
+
+  cancelButtonText: {
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'Medium'),
+    color: colors.text.secondary,
+  },
+
+  saveButton: {
+    flex: 2,
+    borderRadius: borderRadius.md,
+    overflow: 'hidden',
+  },
+
+  saveButtonGradient: {
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+
+  saveButtonText: {
+    fontSize: fonts.sizes.md,
+    fontFamily: getFontFamily('Poppins', 'SemiBold'),
+    color: colors.surface,
   },
 });
