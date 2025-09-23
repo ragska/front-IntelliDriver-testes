@@ -1,16 +1,15 @@
-// Importação fundamental do React com hooks essenciais para gerenciamento de estado
-// useState: Hook para criação e gerenciamento de estados locais do componente
+// ========================================
+// TELA DE DADOS PESSOAIS - INTELLIDRIVER
+// ========================================
+
+/**
+ * IMPORTAÇÕES E DEPENDÊNCIAS
+ * 
+ * Tela de dados pessoais do aplicativo IntelliDriver.
+ * Focada exclusivamente na edição de informações pessoais e do veículo.
+ */
+
 import React, { useState } from 'react';
-// Importações organizadas de componentes nativos do React Native para construção completa da interface
-// StyleSheet: Sistema de estilos otimizado e performático do React Native
-// Text: Componente fundamental para exibição de textos estilizados
-// View: Container universal para layout, estruturação e organização visual
-// Image: Componente para renderização de imagens locais, remotas e dinâmicas
-// TouchableOpacity: Botão interativo com feedback visual através de mudança de opacidade
-// ScrollView: Container rolável para conteúdo que excede dimensões da tela
-// TextInput: Campo de entrada de texto com validação, formatação e controle de estado
-// Alert: Sistema nativo de alertas, confirmações e diálogos do dispositivo
-// Modal: Componente de sobreposição para janelas modais, confirmações e ações secundárias
 import { 
   StyleSheet, 
   Text, 
@@ -22,29 +21,20 @@ import {
   Alert,
   Modal
 } from 'react-native';
-// Importação do LinearGradient do Expo para criação de gradientes lineares e efeitos visuais sofisticados
+
 import { LinearGradient } from 'expo-linear-gradient';
-// Importação da biblioteca de ícones Ionicons para interface consistente e acessível
 import { Ionicons } from '@expo/vector-icons';
-// Importação do ImagePicker do Expo para seleção de imagens da galeria e câmera do dispositivo
 import * as ImagePicker from 'expo-image-picker';
-// Importação do componente BackButton para navegação consistente de retorno entre telas
 import BackButton from '../components/BackButton';
-// Importação do componente Header para cabeçalho com logo centralizada
 import Header from '../components/Header';
-// Importação completa do sistema de design centralizado com tokens visuais padronizados
-// colors: Paleta de cores da aplicação com tons principais, secundários e estados
-// fonts: Configurações tipográficas com tamanhos, pesos e famílias de fontes
-// spacing: Sistema de espaçamentos consistentes para margins, paddings e gaps
-// borderRadius: Padrões de bordas arredondadas para elementos da interface
-// shadows: Configurações de sombras para depth e hierarquia visual
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
-// Importação da função helper para mapeamento dinâmico de famílias de fontes
 import { getFontFamily } from '../hooks/useFontLoader';
 
-// Componente funcional principal Profile que gerencia o perfil completo do usuário
-// Recebe navigation como prop para controle de navegação entre telas da aplicação
-export default function Profile({ navigation }) {
+// ========================================
+// COMPONENTE PRINCIPAL - DADOS PESSOAIS
+// ========================================
+
+export default function DadosPessoais({ navigation }) {
   // Estado para controlar modo de edição do perfil (visualização vs edição)
   // Permite alternar entre modo de leitura e modo de edição dos dados do usuário
   const [isEditing, setIsEditing] = useState(false);
@@ -221,28 +211,18 @@ export default function Profile({ navigation }) {
       {/* Header com logo centralizada */}
       <Header />
       
-      {/* Header com gradiente e botão de edição */}
-      <LinearGradient
-        // Gradiente do verde principal para tom escuro criando depth visual
-        colors={[colors.primary, colors.dark]}
-        style={styles.header}
-      >
-        {/* Botão de retorno consistente usando componente reutilizável */}
+      {/* Header simples com título e botão de voltar */}
+      <View style={styles.header}>
         <BackButton />
+        <Text style={styles.headerTitle}>Dados Pessoais</Text>
         
-        {/* Conteúdo central do header com título e ações */}
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Meu Perfil</Text>
-          
-          {/* Botão de edição visível apenas quando não está editando */}
-          {!isEditing && (
-            <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-              {/* Ícone de lápis para indicar ação de edição */}
-              <Ionicons name="pencil" size={20} color={colors.surface} />
-            </TouchableOpacity>
-          )}
-        </View>
-      </LinearGradient>
+        {/* Botão de edição visível apenas quando não está editando */}
+        {!isEditing && (
+          <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
+            <Ionicons name="pencil" size={20} color={colors.primary} />
+          </TouchableOpacity>
+        )}
+      </View>
 
       {/* Container principal rolável para todo conteúdo do perfil */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -301,36 +281,6 @@ export default function Profile({ navigation }) {
           {renderField('Placa do Veículo', profileData.licensePlate, 'licensePlate')}
         </View>
 
-        {/* Seção de estatísticas e métricas do usuário */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Suas Estatísticas</Text>
-          
-          {/* Container para organização horizontal das estatísticas */}
-          <View style={styles.statsContainer}>
-            {/* Estatística de pontos acumulados com ícone de troféu */}
-            <View style={styles.statItem}>
-              <Ionicons name="trophy" size={24} color={colors.primary} />
-              <Text style={styles.statValue}>1,250</Text>
-              <Text style={styles.statLabel}>Pontos</Text>
-            </View>
-            
-            {/* Estatística de viagens realizadas com ícone de carro */}
-            <View style={styles.statItem}>
-              <Ionicons name="car" size={24} color={colors.primary} />
-              <Text style={styles.statValue}>85</Text>
-              <Text style={styles.statLabel}>Viagens</Text>
-            </View>
-            
-            {/* Estatística adicional (próxima linha do código) */}
-            {/* Estatística de impacto ambiental com ícone de folha */}
-            <View style={styles.statItem}>
-              <Ionicons name="leaf" size={24} color={colors.primary} />
-              <Text style={styles.statValue}>23kg</Text>
-              <Text style={styles.statLabel}>CO² Economizado</Text>
-            </View>
-          </View>
-        </View>
-
         {/* Botões de ação para salvar ou cancelar edição */}
         {isEditing && (
           <View style={styles.buttonContainer}>
@@ -341,7 +291,12 @@ export default function Profile({ navigation }) {
             
             {/* Botão salvar que valida e aplica alterações */}
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-              <Text style={styles.saveButtonText}>Salvar</Text>
+              <LinearGradient
+                colors={[colors.primary, '#45A049']}
+                style={styles.saveButtonGradient}
+              >
+                <Text style={styles.saveButtonText}>Salvar Alterações</Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         )}
@@ -404,59 +359,65 @@ export default function Profile({ navigation }) {
 // Definição de estilos usando StyleSheet para otimização de performance
 // Centraliza todos os estilos do componente Profile seguindo o sistema de design
 const styles = StyleSheet.create({
-  // Container principal ocupando toda a tela com cor de fundo padrão
+  // Container principal ocupando toda a tela com fundo limpo
   container: {
     flex: 1,
     backgroundColor: colors.background,
   },
-  // Header superior com gradiente e espaçamento para status bar
+  // Header secundário simples com navegação e título
   header: {
-    // Padding superior incluindo espaço para status bar + margem adicional
-    paddingTop: spacing.xxl + spacing.md,
     // Padding horizontal padrão para alinhamento com design system
     paddingHorizontal: spacing.lg,
-    // Padding inferior para separação do conteúdo
-    paddingBottom: spacing.lg,
-  },
-  // Container do conteúdo do header com layout horizontal
-  headerContent: {
-    // Organização horizontal dos elementos (título e botão editar)
+    // Padding vertical para separação do conteúdo
+    paddingVertical: spacing.md,
+    // Fundo branco limpo
+    backgroundColor: colors.surface,
+    // Layout horizontal para organizar elementos
     flexDirection: 'row',
-    // Distribui espaço entre título e botão de edição
+    // Distribui espaço entre back button, título e botão de edição
     justifyContent: 'space-between',
     // Alinha elementos verticalmente no centro
     alignItems: 'center',
-    // Margem superior para espaçamento do botão de voltar
-    marginTop: spacing.md,
+    // Sombra sutil para separação
+    ...shadows.small,
   },
-  // Estilo do título principal "Meu Perfil" no header
+  // Estilo do título principal "Dados Pessoais" no header
   headerTitle: {
-    // Tamanho de fonte extra grande para hierarquia visual
-    fontSize: fonts.sizes.xxl,
+    // Tamanho de fonte grande para hierarquia visual
+    fontSize: fonts.sizes.lg,
     // Fonte Poppins Bold para destaque e importância
     fontFamily: getFontFamily('Poppins', 'Bold'),
-    // Cor branca/superfície para contraste com gradiente escuro
-    color: colors.surface,
+    // Cor do texto primário
+    color: colors.text.primary,
+    // Ocupa espaço flexível para centralização
+    flex: 1,
+    // Centraliza o texto horizontalmente
+    textAlign: 'center',
   },
-  // Botão circular de edição no header
+  // Botão circular de edição no header com estilo simples
   editButton: {
     width: 40,
     height: 40,
     // Bordas completamente arredondadas para criar círculo perfeito
     borderRadius: borderRadius.round,
-    // Fundo escuro para contraste com gradiente do header
-    backgroundColor: colors.dark,
+    // Fundo transparente para estilo minimalista
+    backgroundColor: 'transparent',
     // Centraliza ícone horizontalmente
     justifyContent: 'center',
     // Centraliza ícone verticalmente
     alignItems: 'center',
+    // Borda sutil com cor primária
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
-  // Container principal do conteúdo rolável
+  // Container principal do conteúdo rolável com estilo aprimorado
   content: {
     // Ocupa todo espaço restante da tela
     flex: 1,
     // Padding uniforme seguindo tokens do design system
     padding: spacing.lg,
+    // Background sutil para separação visual
+    backgroundColor: 'transparent',
   },
   // Container centralizador da seção de imagem de perfil
   profileImageContainer: {
@@ -521,10 +482,18 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.surface,
   },
-  // Container para cada seção de conteúdo (pessoal, veículo, estatísticas)
+  // Container para cada seção de conteúdo com design de card limpo
   section: {
     // Margem inferior para espaçamento entre seções
     marginBottom: spacing.xl,
+    // Fundo branco sólido
+    backgroundColor: colors.surface,
+    // Bordas arredondadas para design moderno
+    borderRadius: borderRadius.lg,
+    // Padding interno generoso
+    padding: spacing.lg,
+    // Sombra suave para depth visual
+    ...shadows.medium,
   },
   // Título de cada seção (Informações Pessoais, etc.)
   sectionTitle: {
@@ -540,7 +509,7 @@ const styles = StyleSheet.create({
   // Container individual para cada campo de dados do perfil
   fieldContainer: {
     // Margem inferior entre campos para organização visual
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
   // Label/rótulo de cada campo (Nome, Email, etc.)
   fieldLabel: {
@@ -593,48 +562,6 @@ const styles = StyleSheet.create({
     // Sombra para indicar interatividade e estado ativo
     ...shadows.small,
   },
-  // Container horizontal para organização das estatísticas em linha
-  statsContainer: {
-    // Layout horizontal para distribuir estatísticas lado a lado
-    flexDirection: 'row',
-    // Distribui estatísticas com espaçamento igual entre elas
-    justifyContent: 'space-around',
-    // Fundo claro para destacar seção de estatísticas
-    backgroundColor: colors.surface,
-    // Bordas mais arredondadas para criar cartão de destaque
-    borderRadius: borderRadius.lg,
-    // Padding interno para espaçamento e respiro visual
-    padding: spacing.lg,
-    // Sombra média para criar elevação e importância visual
-    ...shadows.medium,
-  },
-  // Container individual para cada estatística (pontos, viagens, CO²)
-  statItem: {
-    // Centraliza ícone, valor e label verticalmente
-    alignItems: 'center',
-  },
-  // Valor numérico principal de cada estatística
-  statValue: {
-    // Tamanho grande para destaque dos números importantes
-    fontSize: fonts.sizes.xl,
-    // Fonte bold para máximo impacto visual dos valores
-    fontFamily: getFontFamily('Poppins', 'Bold'),
-    // Cor principal para importância e destaque
-    color: colors.text.primary,
-    // Margem pequena entre ícone e valor
-    marginTop: spacing.xs,
-  },
-  // Label descritivo de cada estatística
-  statLabel: {
-    // Tamanho pequeno para informação complementar
-    fontSize: fonts.sizes.sm,
-    // Fonte regular para não competir com o valor
-    fontFamily: getFontFamily('Poppins', 'Regular'),
-    // Cor secundária para hierarquia visual
-    color: colors.text.secondary,
-    // Margem pequena entre valor e label
-    marginTop: spacing.xs,
-  },
   // Container horizontal para botões de cancelar e salvar
   buttonContainer: {
     // Layout horizontal para botões lado a lado
@@ -669,28 +596,33 @@ const styles = StyleSheet.create({
     // Cor verde para consistência com borda
     color: colors.primary,
   },
-  // Botão de salvar com fundo sólido (ação primária)
+  // Botão de salvar com gradiente
   saveButton: {
-    // Ocupa metade do espaço disponível
-    flex: 1,
-    // Mesma altura do botão cancelar para alinhamento
-    paddingVertical: spacing.md,
+    // Ocupa maior parte do espaço disponível
+    flex: 2,
     // Bordas arredondadas consistentes
     borderRadius: borderRadius.md,
-    // Fundo verde para indicar ação principal
-    backgroundColor: colors.primary,
-    // Centraliza texto horizontalmente
-    alignItems: 'center',
+    // Overflow hidden para gradiente
+    overflow: 'hidden',
     // Sombra para elevar botão principal
     ...shadows.medium,
   },
+  
+  // Gradiente do botão salvar
+  saveButtonGradient: {
+    // Mesma altura do botão cancelar para alinhamento
+    paddingVertical: spacing.md,
+    // Centraliza texto horizontalmente
+    alignItems: 'center',
+  },
+  
   // Texto do botão salvar
   saveButtonText: {
     // Mesmo tamanho para consistência
     fontSize: fonts.sizes.md,
     // Mesma fonte para uniformidade
     fontFamily: getFontFamily('Poppins', 'SemiBold'),
-    // Cor branca para contraste com fundo verde
+    // Cor branca para contraste com gradiente
     color: colors.surface,
   },
   // Overlay escuro semitransparente que cobre toda a tela durante modal

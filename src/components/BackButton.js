@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
    */
   backButton: {
     position: 'absolute',                    // Posicionamento livre na tela
-    top: 64,                                 // Distância do topo (considerando safe area)
+    top: 12,                                 // Distância do topo (considerando safe area)
     left: 16,                                // Margem esquerda padrão
     width: 44,                               // Largura adequada para toque
     height: 44,                              // Altura seguindo guidelines de acessibilidade

@@ -26,7 +26,7 @@ import Historico from './src/screens/Historico';            // Tela de históric
 import Login from './src/screens/Login';                    // Tela de autenticação
 import PercursoDetalhes from './src/screens/PercursoDetalhes'; // Tela de detalhes de um percurso específico
 import CarsAnalytics from './src/screens/CarsAnalytics';    // Tela de diagnóstico do veículo
-import Profile from './src/screens/Profile';                // Tela de perfil do usuário
+import DadosPessoais from './src/screens/DadosPessoais';    // Tela de dados pessoais do usuário
 import ProfileStats from './src/screens/ProfileStats';      // Tela de estatísticas do perfil
 
 // ========================================
@@ -158,8 +158,8 @@ export default function App() {
         {/* Tela de diagnóstico e análise do veículo */}
         <Stack.Screen name="CarsAnalytics" component={CarsAnalytics} />
         
-        {/* Tela de perfil e configurações do usuário */}
-        <Stack.Screen name="Profile" component={Profile} />
+        {/* Tela de dados pessoais e configurações do usuário */}
+        <Stack.Screen name="DadosPessoais" component={DadosPessoais} />
         
         {/* Tela de estatísticas detalhadas do perfil */}
         <Stack.Screen name="ProfileStats" component={ProfileStats} />

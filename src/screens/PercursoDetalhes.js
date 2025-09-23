@@ -94,8 +94,12 @@ export default function PercursoDetalhes() {
       {/* Header com logo centralizada */}
       <Header />
       
-      {/* Componente de navegação de retorno posicionado absolutamente */}
-      <BackButton />
+      {/* Header secundário com navegação e título */}
+      <View style={styles.navigationHeader}>
+        <BackButton />
+        <Text style={styles.navigationTitle}>Detalhes do Percurso</Text>
+        <View style={styles.placeholder} />
+      </View>
       
       {/* ScrollView para conteúdo extenso com múltiplas seções informativas */}
       {/* Permite rolagem vertical suave sem indicador visual para interface limpa */}
@@ -251,6 +255,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Ocupa todo espaço vertical disponível
     backgroundColor: '#F8F9F7', // Verde muito claro para fundo principal
+  },
+  // Header secundário com navegação e título
+  navigationHeader: {
+    paddingHorizontal: 24, // Padding lateral consistente
+    paddingVertical: 16, // Padding vertical para separação
+    backgroundColor: '#FFFFFF', // Fundo branco limpo
+    flexDirection: 'row', // Layout horizontal
+    justifyContent: 'space-between', // Distribui espaço entre elementos
+    alignItems: 'center', // Alinha elementos verticalmente no centro
+    shadowColor: 'rgba(42, 60, 26, 0.1)', // Sombra sutil
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  // Título do header de navegação
+  navigationTitle: {
+    fontSize: 18, // Tamanho de fonte médio-grande
+    fontWeight: '600', // Peso semi-bold
+    color: '#2A3C1A', // Verde escuro para contraste
+    flex: 1, // Ocupa espaço disponível
+    textAlign: 'center', // Centraliza o texto
+  },
+  // Placeholder para manter layout simétrico
+  placeholder: {
+    width: 40, // Mesma largura do BackButton
   },
   // Container do conteúdo scrollável com padding lateral consistente
   // Permite organização visual com respiro lateral adequado

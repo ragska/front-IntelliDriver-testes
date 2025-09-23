@@ -192,17 +192,14 @@ export default function Login() {
       <Header />
 
       {/* ========================================
-          NAVEGAÇÃO DE RETORNO
+          HEADER DE NAVEGAÇÃO E TÍTULO
           ======================================== */}
       
-      {/**
-       * BOTÃO DE VOLTAR
-       * 
-       * Componente reutilizável para navegação de retorno.
-       * Posicionamento absoluto no canto superior esquerdo.
-       * Permite voltar à tela anterior (ex: tela inicial).
-       */}
-      <BackButton />
+      <View style={styles.navigationHeader}>
+        <BackButton />
+        <Text style={styles.navigationTitle}>Login</Text>
+        <View style={styles.placeholder} />
+      </View>
       
       {/* ========================================
           CABEÇALHO DA TELA
@@ -597,6 +594,40 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,       // Fundo neutro do tema
     paddingHorizontal: spacing.lg,            // Margem lateral generous
     paddingTop: spacing.xxl,                  // Safe area + espaçamento
+  },
+  
+  // ========================================
+  // HEADER DE NAVEGAÇÃO
+  // ========================================
+  
+  // Header secundário com navegação e título
+  navigationHeader: {
+    paddingHorizontal: spacing.lg, // Padding lateral consistente
+    paddingVertical: spacing.md, // Padding vertical para separação
+    backgroundColor: colors.surface, // Fundo branco limpo
+    flexDirection: 'row', // Layout horizontal
+    justifyContent: 'space-between', // Distribui espaço entre elementos
+    alignItems: 'center', // Alinha elementos verticalmente no centro
+    marginHorizontal: -spacing.lg, // Compensa padding do container
+    shadowColor: 'rgba(0, 0, 0, 0.1)', // Sombra sutil
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  
+  // Título do header de navegação
+  navigationTitle: {
+    fontSize: fonts.sizes.lg, // Tamanho de fonte médio-grande
+    fontFamily: 'Poppins-SemiBold', // Peso semi-bold
+    color: colors.text.primary, // Cor primária do texto
+    flex: 1, // Ocupa espaço disponível
+    textAlign: 'center', // Centraliza o texto
+  },
+  
+  // Placeholder para manter layout simétrico
+  placeholder: {
+    width: 40, // Mesma largura do BackButton
   },
   
   // ========================================
