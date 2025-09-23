@@ -442,6 +442,16 @@ export default function Home({ navigation }) {
         </View>
 
         
+        
+
+        {/* ========================================
+            WIDGET DE CONDIÇÕES ATUAIS
+            ======================================== */}
+        
+        <View style={styles.conditionsSection}>
+          {renderConditionsWidget()}
+        </View>
+        
         {/* ========================================
             IMPACTO AMBIENTAL
             ======================================== */}
@@ -467,14 +477,6 @@ export default function Home({ navigation }) {
             </LinearGradient>
           </View>
           
-        </View>
-
-        {/* ========================================
-            WIDGET DE CONDIÇÕES ATUAIS
-            ======================================== */}
-        
-        <View style={styles.conditionsSection}>
-          {renderConditionsWidget()}
         </View>
 
         {/* ========================================

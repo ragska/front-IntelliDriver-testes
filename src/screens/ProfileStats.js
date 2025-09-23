@@ -187,7 +187,7 @@ export default function ProfileStats() {
               icon="car" 
               value={userData.stats.totalTrips} 
               label="Viagens" 
-              subtitle="Total realizadas"
+              subtitle="Total realizadas com IntelliDriver"
               color={colors.primary}
             />
             <StatCard 
@@ -213,23 +213,6 @@ export default function ProfileStats() {
               label="Combustível Poupado" 
               subtitle="Litros economizados"
               color="#FF9800"
-            />
-          </View>
-
-          <View style={styles.statsGrid}>
-            <StatCard 
-              icon="pulse" 
-              value={userData.stats.avgEcoScore} 
-              label="Eco Score Médio" 
-              subtitle="Eficiência energética"
-              color="#9C27B0"
-            />
-            <StatCard 
-              icon="shield-checkmark" 
-              value={userData.stats.safetyScore} 
-              label="Safety Score" 
-              subtitle="Índice de segurança"
-              color="#E91E63"
             />
           </View>
         </View>
