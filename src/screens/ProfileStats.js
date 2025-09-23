@@ -49,7 +49,6 @@ export default function ProfileStats() {
     profileImage: null,
     ecocoins: 1850,
     level: 'Eco Master',
-    levelProgress: 75, // Progresso para próximo nível
     nextLevelPoints: 2000,
     memberSince: 'Janeiro 2024',
     stats: {
@@ -248,29 +247,6 @@ export default function ProfileStats() {
     </TouchableOpacity>
   );
 
-  const renderProgressBar = () => {
-    const progress = (userData.stats.points / userData.nextLevelPoints) * 100;
-    return (
-      <View style={styles.progressSection}>
-        <View style={styles.progressHeader}>
-          <Text style={styles.progressTitle}>Progresso do Nível</Text>
-          <Text style={styles.progressPoints}>
-            {userData.stats.points} / {userData.nextLevelPoints} pts
-          </Text>
-        </View>
-        <View style={styles.progressBar}>
-          <LinearGradient
-            colors={[colors.secondary, colors.primary]}
-            style={[styles.progressFill, { width: `${progress}%` }]}
-          />
-        </View>
-        <Text style={styles.progressText}>
-          {userData.nextLevelPoints - userData.stats.points} pontos para o próximo nível
-        </Text>
-      </View>
-    );
-  };
-
   // ========================================
   // RENDERIZAÇÃO DA INTERFACE REDESENHADA
   // ========================================
@@ -329,9 +305,6 @@ export default function ProfileStats() {
               <Text style={styles.ecocoinsLabel}>EcoCoins</Text>
             </View>
           </View>
-
-          {/* Progress Bar */}
-          {renderProgressBar()}
         </LinearGradient>
 
         {/* ========================================
@@ -602,52 +575,6 @@ const styles = StyleSheet.create({
     fontSize: fonts.sizes.sm,
     fontFamily: getFontFamily('Poppins', 'Medium'),
     color: colors.text.secondary,
-  },
-  
-  // BARRA DE PROGRESSO
-  progressSection: {
-    marginTop: spacing.md,
-  },
-  
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.xs,
-  },
-  
-  progressTitle: {
-    fontSize: fonts.sizes.sm,
-    fontFamily: getFontFamily('Poppins', 'SemiBold'),
-    color: 'white',
-  },
-  
-  progressPoints: {
-    fontSize: fonts.sizes.xs,
-    fontFamily: getFontFamily('Poppins', 'Regular'),
-    color: 'white',
-    opacity: 0.8,
-  },
-  
-  progressBar: {
-    height: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: borderRadius.sm,
-    overflow: 'hidden',
-    marginBottom: spacing.xs,
-  },
-  
-  progressFill: {
-    height: '100%',
-    borderRadius: borderRadius.sm,
-  },
-  
-  progressText: {
-    fontSize: fonts.sizes.xs,
-    fontFamily: getFontFamily('Poppins', 'Regular'),
-    color: 'white',
-    opacity: 0.8,
-    textAlign: 'center',
   },
   
   // SEÇÃO DE ACESSO
