@@ -28,6 +28,14 @@ import NavBar from '../components/Navbar';
 import Header from '../components/Header';
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
 import { getFontFamily } from '../hooks/useFontLoader';
+import {
+  performanceMetrics,
+  monthlyChallenges,
+  drivingTips,
+  currentConditions,
+  recentAchievements,
+  topUsers
+} from '../data/homeData';
 
 // ========================================
 // COMPONENTE PRINCIPAL - HOME
@@ -135,220 +143,9 @@ export default function Home({ navigation }) {
   };
 
   // ========================================
-  // DADOS MOCK - IMPACTO AMBIENTAL
-  // ========================================
-  
-  const performanceMetrics = {
-    co2Impact: {
-      current: 27.4,
-      previous: 31.8,
-      change: +13.8,
-      trend: 'up',
-      description: 'CO₂ Economizado'
-    }
-  };
-
-  // ========================================
-  // DADOS MOCK - DESAFIOS MENSAIS
-  // ========================================
-  
-  const monthlyChallenges = [
-    {
-      id: 1,
-      title: 'Eco Master',
-      description: 'Complete 50 viagens com economia de combustível',
-      progress: 32,
-      target: 50,
-      points: 500,
-      icon: 'leaf',
-      color: '#4CAF50',
-      completed: false
-    },
-    {
-      id: 2,
-      title: 'Velocidade Constante',
-      description: 'Mantenha velocidade ideal por 1000 km',
-      progress: 847,
-      target: 1000,
-      points: 400,
-      icon: 'speedometer',
-      color: '#2196F3',
-      completed: false
-    },
-    {
-      id: 3,
-      title: 'Condutor Seguro',
-      description: 'Complete 30 dias sem infrações de trânsito',
-      progress: 23,
-      target: 30,
-      points: 750,
-      icon: 'shield-checkmark',
-      color: '#FF9800',
-      completed: false
-    },
-    {
-      id: 4,
-      title: 'Explorador',
-      description: 'Visite 15 locais diferentes este mês',
-      progress: 15,
-      target: 15,
-      points: 300,
-      icon: 'map',
-      color: '#9C27B0',
-      completed: true
-    }
-  ];
-
-  // ========================================
-  // DADOS MOCK - DICAS DE CONDUÇÃO
-  // ========================================
-  
-  const drivingTips = [
-    {
-      id: 1,
-      title: 'Acelere Gradualmente',
-      description: 'Acelerar suavemente pode economizar até 20% de combustível',
-      icon: 'trending-up',
-      category: 'Economia'
-    },
-    {
-      id: 2,
-      title: 'Mantenha Distância',
-      description: 'Manter distância segura reduz frenagens bruscas',
-      icon: 'resize',
-      category: 'Segurança'
-    },
-    {
-      id: 3,
-      title: 'Velocidade Constante',
-      description: 'Velocidade constante melhora eficiência do motor',
-      icon: 'speedometer',
-      category: 'Performance'
-    },
-    {
-      id: 4,
-      title: 'Planeje sua Rota',
-      description: 'Rotas bem planejadas evitam trânsito e economizam tempo',
-      icon: 'map',
-      category: 'Planejamento'
-    }
-  ];
-
-  // ========================================
-  // DADOS MOCK - CONDIÇÕES ATUAIS
-  // ========================================
-  
-  const currentConditions = {
-    weather: {
-      condition: 'sunny',
-      temperature: 24,
-      description: 'Ensolarado'
-    },
-    ethanolPrice: {
-      price: 4.12,
-      description: 'Etanol',
-      trend: 'stable' // up, down, stable
-    },
-    fuelPrice: {
-      gasoline: 5.89,
-      ethanol: 4.12,
-      trend: 'stable' // up, down, stable
-    }
-  };
-
-  // ========================================
-  // DADOS MOCK - CONQUISTAS RECENTES
-  // ========================================
-  
-  const recentAchievements = [
-    {
-      id: 1,
-      title: 'Eco Master',
-      description: 'Economizou 100L de combustível',
-      icon: 'trophy',
-      color: '#FFD700',
-      dateEarned: '2025-09-20',
-      isNew: true
-    },
-    {
-      id: 2,
-      title: 'Consistência',
-      description: '7 dias seguidos dirigindo com eficiência',
-      icon: 'checkmark-circle',
-      color: '#4CAF50',
-      dateEarned: '2025-09-18',
-      isNew: false
-    }
-  ];
-
-  // ========================================
-  // DADOS MOCK - TOP 3 USUÁRIOS (SIMPLIFICADO)
-  // ========================================
-  
-  const topUsers = [
-    { id: 1, name: 'Ana Silva', points: 65321, position: 1 },
-    { id: 2, name: 'Carlos Mendes', points: 50000, position: 2 },
-    { id: 3, name: 'Maria Santos', points: 45321, position: 3 },
-  ];
-
-  // ========================================
   // FUNÇÕES DE RENDERIZAÇÃO MODERNAS
   // ========================================
   
-  /**
-   * CARD DE ESTATÍSTICA COM DESIGN MODERNO
-   */
-  const renderStatCard = (title, value, icon, color = colors.primary, subtitle = null) => (
-    <View style={[styles.modernStatCard]} key={title}>
-      <LinearGradient
-        colors={[color + '20', color + '05']}
-        style={styles.statCardGradient}
-      >
-        <View style={[styles.statIconContainer, { backgroundColor: color + '15' }]}>
-          <Ionicons name={icon} size={24} color={color} />
-        </View>
-        <View style={styles.statContent}>
-          <Text style={styles.statValue}>{value}</Text>
-          <Text style={styles.statTitle}>{title}</Text>
-          {subtitle && <Text style={styles.statSubtitle}>{subtitle}</Text>}
-        </View>
-      </LinearGradient>
-    </View>
-  );
-
-  /**
-   * CARD DE ESTATÍSTICA COM COMPARAÇÃO
-   */
-  const renderComparisonCard = (title, data, icon, color = colors.primary, unit = '') => {
-    const trendColor = data.trend === 'up' ? '#4CAF50' : data.trend === 'down' ? '#F44336' : colors.text.secondary;
-    const trendIcon = data.trend === 'up' ? 'trending-up' : data.trend === 'down' ? 'trending-down' : 'remove';
-    const changePrefix = data.change > 0 ? '+' : '';
-    
-    return (
-      <View style={[styles.comparisonCard]} key={title}>
-        <LinearGradient
-          colors={[color + '20', color + '05']}
-          style={styles.statCardGradient}
-        >
-          <View style={[styles.statIconContainer, { backgroundColor: color + '15' }]}>
-            <Ionicons name={icon} size={24} color={color} />
-          </View>
-          <View style={styles.statContent}>
-            <Text style={styles.statValue}>{data.current}{unit}</Text>
-            <Text style={styles.statTitle}>{title}</Text>
-            <View style={styles.comparisonRow}>
-              <Ionicons name={trendIcon} size={16} color={trendColor} />
-              <Text style={[styles.comparisonText, { color: trendColor }]}>
-                {changePrefix}{data.change.toFixed(1)}%
-              </Text>
-              <Text style={styles.comparisonPeriod}>vs semana anterior</Text>
-            </View>
-          </View>
-        </LinearGradient>
-      </View>
-    );
-  };
-
   /**
    * CARD DE DESAFIO MENSAL
    */
@@ -582,7 +379,7 @@ export default function Home({ navigation }) {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Tipo de Combustível</Text>
                 <View style={styles.fuelTypeContainer}>
-                  {['Gasolina', 'Etanol', 'Flex'].map((fuel) => (
+                  {['Gasolina', 'Etanol'].map((fuel) => (
                     <TouchableOpacity
                       key={fuel}
                       style={[
@@ -1019,16 +816,6 @@ const styles = StyleSheet.create({
   // ESTILOS MODERNOS ADICIONAIS
   // ========================================
   
-  // Cards de estatística modernos
-  modernStatCard: {
-    flex: 1,
-    minWidth: 150,
-    borderRadius: borderRadius.xl,
-    overflow: 'hidden',
-    ...shadows.medium,
-    marginBottom: spacing.sm,
-  },
-  
   statCardGradient: {
     padding: spacing.md,
     flexDirection: 'row',
@@ -1135,33 +922,6 @@ const styles = StyleSheet.create({
     fontFamily: getFontFamily('Poppins', 'Medium'),
     color: '#4CAF50',
     textAlign: 'center',
-  },
-  
-  // ESTILOS DOS CARDS DE COMPARAÇÃO (mantidos)
-  comparisonCard: {
-    flex: 1,
-    minWidth: 150,
-    borderRadius: borderRadius.xl,
-    overflow: 'hidden',
-    ...shadows.medium,
-  },
-  
-  comparisonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: spacing.xs,
-    gap: spacing.xs / 2,
-  },
-  
-  comparisonText: {
-    fontSize: fonts.sizes.sm,
-    fontFamily: getFontFamily('Poppins', 'SemiBold'),
-  },
-  
-  comparisonPeriod: {
-    fontSize: fonts.sizes.xs,
-    fontFamily: getFontFamily('Poppins', 'Regular'),
-    color: colors.text.placeholder,
   },
   
   performanceSummary: {

@@ -32,6 +32,12 @@ import { colors, fonts, spacing, borderRadius, shadows } from '../constants/them
 // Importação do hook personalizado para carregamento de fontes
 import { getFontFamily } from '../hooks/useFontLoader';
 
+// Importação do hook personalizado para gerenciamento de Bluetooth
+import { useBluetooth } from '../hooks/useBluetooth';
+
+// Importação dos dados mock de diagnóstico do veículo
+import { mockData } from '../data/carsAnalyticsData';
+
 // ========================================
 // COMPONENTE PRINCIPAL - CARSANALYTICS
 // ========================================
@@ -72,223 +78,18 @@ export default function CarsAnalytics({ navigation }) {
   const [loading, setLoading] = useState(true);
   
   /**
-   * HOOK useState - CONEXÃO BLUETOOTH
+   * HOOK PERSONALIZADO - GERENCIAMENTO BLUETOOTH
    * 
-   * Controla se o dispositivo OBD-II está conectado via Bluetooth.
-   * - Estado inicial: false (desconectado)
-   * - Muda para true quando conectado com sucesso
-   * - Usado para mostrar status da conexão
+   * Usa o hook customizado para gerenciar toda a lógica de conexão Bluetooth.
+   * Retorna estados e funções necessários para controlar dispositivos OBD-II.
    */
-  const [bluetoothConnected, setBluetoothConnected] = useState(false);
-  
-  /**
-   * HOOK useState - PROCESSO DE CONEXÃO
-   * 
-   * Controla se está no processo de conectar o Bluetooth.
-   * - Estado inicial: false
-   * - Muda para true durante o processo de conexão
-   * - Usado para mostrar "Conectando..." e desabilitar botão
-   */
-  const [connecting, setConnecting] = useState(false);
-
-  // ========================================
-  // DADOS MOCK - SIMULAÇÃO DE DADOS REAIS
-  // ========================================
-  
-  /**
-   * OBJETO DE DADOS SIMULADOS
-   * 
-   * Este objeto contém dados fictícios que simulam informações reais
-   * que seriam obtidas de um scanner OBD-II conectado ao veículo.
-   * Na implementação real, estes dados viriam de uma API ou diretamente
-   * do dispositivo OBD-II via Bluetooth.
-   */
-  const mockData = {
-    
-    // ========================================
-    // SEÇÃO: SAÚDE GERAL DO VEÍCULO
-    // ========================================
-    
-    /**
-     * OBJETO vehicleHealth
-     * 
-     * Contém informações gerais sobre o estado de saúde do veículo,
-     * incluindo pontuação geral, status, datas de manutenção e quilometragem.
-     */
-    vehicleHealth: {
-      overallStatus: 'WARNING',     // Status geral: 'OK', 'WARNING', 'CRITICAL'
-      healthScore: 72,              // Pontuação de 0-100 da saúde do veículo
-      lastMaintenance: '15/08/2024', // Data da última manutenção realizada
-      nextMaintenance: '15/10/2024', // Data agendada para próxima manutenção
-      mileage: 45820                // Quilometragem atual do veículo
-    },
-    
-    // ========================================
-    // SEÇÃO: ALERTAS DE MANUTENÇÃO URGENTE
-    // ========================================
-    
-    /**
-     * ARRAY maintenanceAlerts
-     * 
-     * Lista de alertas de manutenção que requerem atenção.
-     * Cada alerta contém informações sobre prioridade, tipo, descrição,
-     * custos estimados e urgência do reparo.
-     */
-    maintenanceAlerts: [
-      {
-        id: 1,                                    // Identificador único do alerta
-        type: 'oil_change',                       // Tipo de manutenção (usado para ícones)
-        priority: 'high',                         // Prioridade: 'high', 'medium', 'low'
-        title: 'Troca de Óleo Vencida',         // Título do alerta
-        description: 'Última troca há 8.000 km. Recomendado a cada 5.000 km.', // Descrição detalhada
-        daysOverdue: 15,                         // Dias em atraso
-        estimatedCost: 120,                      // Custo estimado em reais
-        urgency: 'urgent'                        // Nível de urgência
-      },
-      {
-        id: 2,
-        type: 'brake_pads',
-        priority: 'medium',
-        title: 'Pastilhas de Freio',
-        description: 'Desgaste detectado. Substituir em até 2.000 km.',
-        remainingKm: 1800,                       // Quilômetros restantes antes da troca
-        estimatedCost: 250,
-        urgency: 'moderate'
-      },
-      {
-        id: 3,
-        type: 'air_filter',
-        priority: 'low',
-        title: 'Filtro de Ar Sujo',
-        description: 'Filtro obstruído. Pode afetar performance e consumo.',
-        efficiency: 65,                          // Porcentagem de eficiência atual
-        estimatedCost: 45,
-        urgency: 'low'
-      },
-      {
-        id: 4,
-        type: 'battery',
-        priority: 'high',
-        title: 'Bateria Fraca',
-        description: 'Voltagem baixa detectada. Risco de falha.',
-        voltage: 11.8,                           // Voltagem atual da bateria
-        estimatedCost: 180,
-        urgency: 'urgent'
-      }
-    ],
-
-    // ========================================
-    // SEÇÃO: ERROS ATIVOS DO OBD-II
-    // ========================================
-    
-    /**
-     * ARRAY activeErrors
-     * 
-     * Lista de códigos de erro ativos detectados pelo sistema OBD-II.
-     * Cada erro contém código DTC, descrição, severidade, impacto
-     * e ações recomendadas para correção.
-     */
-    activeErrors: [
-      {
-        code: 'P0171',                           // Código DTC (Diagnostic Trouble Code)
-        description: 'Sistema muito pobre (Banco 1)', // Descrição do erro
-        severity: 'medium',                      // Severidade: 'high', 'medium', 'low'
-        impact: 'Aumento do consumo, possível dano ao catalisador', // Impacto no veículo
-        recommendedAction: 'Verificar sensores de oxigênio e injetores', // Ação recomendada
-        estimatedRepairCost: 350,               // Custo estimado do reparo
-        detected: '18/09/2024'                  // Data de detecção do erro
-      },
-      {
-        code: 'P0300',
-        description: 'Falha aleatória de ignição',
-        severity: 'high',
-        impact: 'Perda de potência, tremores, danos ao motor',
-        recommendedAction: 'Verificar velas, bobinas e cabos de ignição',
-        estimatedRepairCost: 280,
-        detected: '19/09/2024'
-      }
-    ],
-
-    // ========================================
-    // SEÇÃO: LEITURAS BÁSICAS OBD-II
-    // ========================================
-    
-    /**
-     * OBJETO basicReadings
-     * 
-     * Contém leituras em tempo real dos sensores do veículo,
-     * organizadas por categoria (motor, combustível, elétrica, emissões).
-     */
-    basicReadings: {
-      
-      /**
-       * SUB-OBJETO engine - Dados do motor
-       */
-      engine: {
-        rpm: 850,           // Rotações por minuto (marcha lenta normal: 800-900)
-        coolantTemp: 89,    // Temperatura do líquido de arrefecimento em °C
-        oilTemp: 95,        // Temperatura do óleo do motor em °C
-        engineLoad: 15      // Carga do motor em porcentagem
-      },
-      
-      /**
-       * SUB-OBJETO fuel - Dados do combustível
-       */
-      fuel: {
-        level: 75,          // Nível de combustível em porcentagem
-        consumption: 8.2,   // Consumo atual em km/l
-        pressure: 3.8       // Pressão do combustível em bar
-      },
-      
-      /**
-       * SUB-OBJETO electrical - Sistema elétrico
-       */
-      electrical: {
-        batteryVoltage: 11.8,      // Voltagem da bateria (normal: 12.6V)
-        alternatorOutput: 14.2     // Saída do alternador em volts
-      },
-      
-      /**
-       * SUB-OBJETO emissions - Sistema de emissões
-       */
-      emissions: {
-        lambdaSensor1: 0.98,       // Sensor lambda/oxigênio banco 1
-        lambdaSensor2: 1.02,       // Sensor lambda/oxigênio banco 2
-        catalystTemp: 520          // Temperatura do catalisador em °C
-      }
-    },
-
-    // ========================================
-    // SEÇÃO: MANUTENÇÕES PROGRAMADAS
-    // ========================================
-    
-    /**
-     * ARRAY scheduledMaintenance
-     * 
-     * Lista de manutenções programadas baseadas na quilometragem,
-     * incluindo dias restantes e custos estimados.
-     */
-    scheduledMaintenance: [
-      { 
-        item: 'Revisão geral',                    // Nome da manutenção
-        km: 50000,                                // Quilometragem para realizar
-        daysRemaining: 25,                        // Dias restantes estimados
-        cost: 450                                 // Custo estimado
-      },
-      { 
-        item: 'Troca do filtro de combustível', 
-        km: 48000, 
-        daysRemaining: 45, 
-        cost: 80 
-      },
-      { 
-        item: 'Alinhamento e balanceamento', 
-        km: 46000, 
-        daysRemaining: 60, 
-        cost: 120 
-      }
-    ]
-  };
+  const {
+    bluetoothConnected,
+    connecting,
+    handleBluetoothConnection,
+    connectionStatus,
+    isDeviceReady
+  } = useBluetooth();
 
   // ========================================
   // HOOK useEffect - CARREGAMENTO INICIAL
@@ -316,100 +117,6 @@ export default function CarsAnalytics({ navigation }) {
       setLoading(false);           // Remove o estado de carregamento
     }, 1000); // Aguarda 1000ms (1 segundo)
   }, []); // Array vazio = executa apenas uma vez ao montar o componente
-
-  // ========================================
-  // FUNÇÃO ASSÍNCRONA - GERENCIAMENTO BLUETOOTH
-  // ========================================
-  
-  /**
-   * FUNÇÃO handleBluetoothConnection
-   * 
-   * Função assíncrona que gerencia a conexão/desconexão com dispositivo OBD-II via Bluetooth.
-   * 
-   * Fluxo de execução:
-   * 1. Verifica se já está conectado
-   * 2. Se conectado: desconecta imediatamente
-   * 3. Se desconectado: inicia processo de conexão
-   * 4. Simula processo de pareamento Bluetooth
-   * 5. Atualiza estados de acordo com resultado
-   * 
-   * Estados gerenciados:
-   * - connecting: true durante processo de conexão
-   * - bluetoothConnected: true quando conectado com sucesso
-   * 
-   * Em uma implementação real, esta função faria:
-   * - Scan de dispositivos Bluetooth
-   * - Pareamento com ELM327 ou similar
-   * - Estabelecimento de comunicação serial
-   * - Verificação de compatibilidade OBD-II
-   */
-  const handleBluetoothConnection = async () => {
-    
-    // ========================================
-    // VERIFICAÇÃO: JÁ ESTÁ CONECTADO?
-    // ========================================
-    if (bluetoothConnected) {
-      // Se já conectado, apenas desconecta e retorna
-      setBluetoothConnected(false);
-      return; // Sai da função
-    }
-
-    // ========================================
-    // PROCESSO DE CONEXÃO
-    // ========================================
-    
-    // Define estado "conectando" para mostrar feedback visual
-    setConnecting(true);
-    
-    try {
-      // ========================================
-      // SIMULAÇÃO DE PROCESSO BLUETOOTH
-      // ========================================
-      
-      /**
-       * Promise que simula o tempo necessário para:
-       * - Ativar Bluetooth (se desabilitado)
-       * - Escanear dispositivos próximos
-       * - Encontrar dispositivo ELM327
-       * - Estabelecer pareamento
-       * - Verificar comunicação OBD-II
-       * - Confirmar conexão estável
-       */
-      await new Promise(resolve => setTimeout(resolve, 2000)); // 2 segundos
-      
-      // Se chegou até aqui, conexão foi bem-sucedida
-      setBluetoothConnected(true);
-      
-    } catch (error) {
-      // ========================================
-      // TRATAMENTO DE ERROS
-      // ========================================
-      
-      /**
-       * Captura e loga erros que podem ocorrer:
-       * - Bluetooth desabilitado
-       * - Dispositivo não encontrado
-       * - Falha no pareamento
-       * - Timeout de conexão
-       * - Incompatibilidade OBD-II
-       */
-      console.error('Erro ao conectar Bluetooth:', error);
-      
-      // Em uma app real, mostraria alerta ao usuário
-      // Alert.alert('Erro', 'Falha ao conectar com dispositivo OBD-II');
-      
-    } finally {
-      // ========================================
-      // LIMPEZA: SEMPRE EXECUTADO
-      // ========================================
-      
-      /**
-       * Bloco finally garante que o estado "connecting" 
-       * sempre seja removido, independente de sucesso ou erro
-       */
-      setConnecting(false);
-    }
-  };
 
   // ========================================
   // COMPONENTE FUNCIONAL - CARTÃO DE SAÚDE DO VEÍCULO
@@ -884,9 +591,7 @@ export default function CarsAnalytics({ navigation }) {
                 styles.bluetoothTextConnected :                     // Texto branco se conectado
                 styles.bluetoothTextDisconnected                    // Texto azul se desconectado
             ]}>
-              {connecting ? 'Conectando...' :                       // Se conectando: mostra "Conectando..."
-               bluetoothConnected ? 'ELM327 Conectado' :            // Se conectado: mostra "Conectado"
-               'Conectar Scanner'}                                  {/* Se desconectado: mostra "Conectar" */}
+              {connectionStatus}
             </Text>
             
             {/* Indicador visual de conexão ativa (bolinha verde) */}
