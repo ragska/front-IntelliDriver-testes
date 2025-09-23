@@ -1,14 +1,3 @@
-// ========================================
-// TELA DE PERFIL E ESTATÍSTICAS REDESENHADA - INTELLIDRIVER
-// ========================================
-
-/**
- * IMPORTAÇÕES E DEPENDÊNCIAS
- * 
- * Tela principal de perfil com estatísticas completas, conquistas e navegação para dados pessoais.
- * Interface totalmente redesenhada com melhor experiência visual e funcionalidades expandidas.
- */
-
 import React, { useState } from 'react';
 import { 
   StyleSheet, 
@@ -33,23 +22,8 @@ import userData from '../data/profileStatsData';
 
 const { width } = Dimensions.get('window');
 
-// ========================================
-// COMPONENTE PRINCIPAL - PROFILE STATS REDESENHADO
-// ========================================
-
 export default function ProfileStats() {
-  // Navegação para outras telas
   const navigation = useNavigation();
-  
-  // ========================================
-  // DADOS IMPORTADOS DO ARQUIVO EXTERNO
-  // ========================================
-  
-  // userData agora vem de profileStatsData.js
-
-  // ========================================
-  // FUNÇÕES DE RENDERIZAÇÃO APRIMORADAS
-  // ========================================
   
   const StatCard = ({ icon, value, label, color = colors.primary, subtitle = null }) => (
     <View style={styles.statCard}>

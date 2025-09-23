@@ -1,56 +1,20 @@
-// ========================================
-// IMPORTAÇÕES E DEPENDÊNCIAS
-// ========================================
-
-// Importação do React e hooks fundamentais para gerenciamento de estado e efeitos
 import React, { useState, useEffect } from 'react';
-
-// Importação de componentes nativos do React Native para construção da interface
 import { 
-  StyleSheet,      // Para criação de estilos CSS-like
-  Text,           // Componente para exibição de texto
-  View,           // Container básico (equivalente ao div no HTML)
-  ScrollView,     // Container com scroll vertical/horizontal
-  TouchableOpacity // Componente tocável que responde ao toque do usuário
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
-
-// Importação do componente Header para cabeçalho com logo centralizada
 import Header from '../components/Header';
-
-// Importação do LinearGradient do Expo para criar gradientes de cores
 import { LinearGradient } from 'expo-linear-gradient';
-
-// Importação de ícones vetoriais da biblioteca Ionicons
 import { Ionicons } from '@expo/vector-icons';
-
-// Importação do componente de navegação personalizado
 import NavBar from '../components/Navbar';
-
-// Importação de constantes de tema (cores, fontes, espaçamentos, etc.)
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
-
-// Importação do hook personalizado para carregamento de fontes
 import { getFontFamily } from '../hooks/useFontLoader';
-
-// Importação do hook personalizado para gerenciamento de Bluetooth
 import { useBluetooth } from '../hooks/useBluetooth';
-
-// Importação dos dados mock de diagnóstico do veículo
 import { mockData } from '../data/carsAnalyticsData';
 
-// ========================================
-// COMPONENTE PRINCIPAL - CARSANALYTICS
-// ========================================
-
-/**
- * FUNÇÃO PRINCIPAL DO COMPONENTE
- * 
- * Este é o componente funcional principal que representa a tela de análise de carros.
- * Recebe props de navegação do React Navigation para permitir navegação entre telas.
- * 
- * @param {Object} navigation - Objeto de navegação do React Navigation
- * @returns {JSX.Element} - Retorna o JSX que será renderizado na tela
- */
 export default function CarsAnalytics({ navigation }) {
   
   // ========================================

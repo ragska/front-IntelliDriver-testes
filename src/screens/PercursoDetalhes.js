@@ -1,29 +1,9 @@
-// Importação do React para criação de componente funcional
-// Não usa hooks de estado pois dados vêm via navigation params
 import React from 'react';
-// Importações de componentes essenciais do React Native para interface de detalhes
-// StyleSheet: Sistema de estilos otimizado para performance
-// Text: Componente fundamental para renderização de textos formatados
-// View: Container universal para estruturação e layout de elementos
-// Image: Componente para exibição de imagens de header dos percursos
-// ScrollView: Container scrollável para conteúdo extenso com múltiplas seções
-// TouchableOpacity: Componente interativo para elementos clicáveis (futuras implementações)
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
-// Importações dos hooks de navegação do React Navigation
-// useNavigation: Hook para acesso ao objeto de navegação e métodos de transição
-// useRoute: Hook para acesso aos parâmetros passados entre telas
 import { useNavigation, useRoute } from '@react-navigation/native';
-// Importação do componente de botão de retorno universal
-// Componente reutilizável para navegação de volta em telas internas
 import BackButton from '../components/BackButton';
-// Importação do componente Header para cabeçalho com logo centralizada
 import Header from '../components/Header';
-// Importação do ícone personalizado EcoCoin para seção de pontuação
-// Componente SVG customizado para representação visual da moeda virtual
 import EcoCoinIcon from '../assets/ecocoin-icon';
-
-// Componente principal para visualização detalhada de percursos específicos
-// Exibe informações completas sobre viagens realizadas incluindo métricas, custos e EcoCoins
 // Recebe dados via navigation params vindos da tela de histórico ou listagem
 export default function PercursoDetalhes() {
   // Hook de navegação para futuros casos de navegação interna

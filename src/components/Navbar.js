@@ -1,32 +1,7 @@
-// ========================================
-// COMPONENTE DE NAVEGAÇÃO - NAVBAR
-// ========================================
-
-/**
- * IMPORTAÇÕES E DEPENDÊNCIAS
- * 
- * Este componente implementa a barra de navegação inferior
- * (bottom navigation) da aplicação IntelliDriver.
- */
-
-// Importação do React para criação do componente
 import React from 'react';
-
-// Importações dos componentes nativos do React Native
-import { 
-  View,           // Container básico
-  TouchableOpacity, // Botão tocável
-  Text,           // Componente de texto (não usado neste componente)
-  StyleSheet      // Sistema de estilos
-} from 'react-native';
-
-// Importação do hook de navegação do React Navigation
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-// Importação dos ícones Octicons (GitHub style icons)
 import Octicons from '@expo/vector-icons/Octicons';
-
-// Importação das constantes de tema
 import { colors, spacing, borderRadius, shadows } from '../constants/theme';
 
 // ========================================

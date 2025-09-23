@@ -27,14 +27,7 @@
     },
     "plugins": [
       "expo-asset",
-      "expo-font",
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "O aplicativo precisa acessar suas fotos para você poder alterar sua foto de perfil.",
-          "cameraPermission": "O aplicativo precisa acessar sua câmera para você poder tirar uma foto de perfil."
-        }
-      ]
+      "expo-font"
     ]
   }
 }

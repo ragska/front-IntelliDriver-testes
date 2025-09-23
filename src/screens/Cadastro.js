@@ -1,11 +1,3 @@
-// ========================================
-// TELA DE CADASTRO - REGISTRO EM 3 PASSOS
-// ========================================
-
-/**
- * IMPORTAÇÕES E DEPENDÊNCIAS
- */
-
 import React, { useState } from 'react';
 import { 
   StyleSheet,
@@ -22,12 +14,7 @@ import Header from '../components/Header';
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
 import { getFontFamily } from '../hooks/useFontLoader';
 
-// ========================================
-// ESTILOS
-// ========================================
-
 const styles = StyleSheet.create({
-  // Layout Principal
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -42,7 +29,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xxl,
   },
   
-  // Header de Navegação
   navigationHeader: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,

@@ -1,66 +1,9 @@
-// ========================================
-// HOOK PERSONALIZADO - BLUETOOTH CONNECTION
-// ========================================
-
-/**
- * Hook customizado para gerenciamento de conexão Bluetooth com dispositivos OBD-II
- * Centraliza toda a lógica de pareamento, conexão e gerenciamento de estado
- * Reutilizável em diferentes telas que precisem de funcionalidade Bluetooth
- */
+// Hook para gerenciamento de conexão Bluetooth com dispositivos OBD-II
 
 import { useState } from 'react';
 
-// ========================================
-// HOOK useBluetooth
-// ========================================
-
-/**
- * HOOK useBluetooth
- * 
- * Hook personalizado que encapsula toda a lógica de conexão Bluetooth
- * para dispositivos OBD-II (como ELM327).
- * 
- * @returns {Object} - Objeto com estados e funções do Bluetooth
- * @returns {boolean} bluetoothConnected - Se o dispositivo está conectado
- * @returns {boolean} connecting - Se está no processo de conexão
- * @returns {Function} handleBluetoothConnection - Função para conectar/desconectar
- * @returns {Function} disconnect - Função para desconectar explicitamente
- * @returns {string} connectionStatus - Status textual da conexão
- * 
- * Exemplo de uso:
- * ```javascript
- * const { 
- *   bluetoothConnected, 
- *   connecting, 
- *   handleBluetoothConnection,
- *   connectionStatus 
- * } = useBluetooth();
- * ```
- */
 export const useBluetooth = () => {
-  
-  // ========================================
-  // ESTADOS DO HOOK
-  // ========================================
-  
-  /**
-   * ESTADO bluetoothConnected
-   * 
-   * Controla se o dispositivo OBD-II está conectado via Bluetooth.
-   * - Estado inicial: false (desconectado)
-   * - Muda para true quando conectado com sucesso
-   * - Usado para mostrar status da conexão na UI
-   */
   const [bluetoothConnected, setBluetoothConnected] = useState(false);
-  
-  /**
-   * ESTADO connecting
-   * 
-   * Controla se está no processo de conectar o Bluetooth.
-   * - Estado inicial: false
-   * - Muda para true durante o processo de conexão
-   * - Usado para mostrar "Conectando..." e desabilitar botões
-   */
   const [connecting, setConnecting] = useState(false);
 
   // ========================================

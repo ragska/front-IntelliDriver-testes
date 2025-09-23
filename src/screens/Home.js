@@ -1,14 +1,3 @@
-// ========================================
-// TELA PRINCIPAL - DASHBOARD HOME REFORMULADA
-// ========================================
-
-/**
- * IMPORTAÇÕES E DEPENDÊNCIAS
- * 
- * Tela principal (Home) do aplicativo IntelliDriver reformulada.
- * Dashboard central personalizado com saudação, estatísticas e funcionalidades principais.
- */
-
 import React, { useState } from 'react';
 import { 
   StyleSheet,
@@ -21,7 +10,6 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import NavBar from '../components/Navbar';
@@ -36,9 +24,6 @@ import {
   recentAchievements,
   topUsers
 } from '../data/homeData';
-
-// ========================================
-// COMPONENTE PRINCIPAL - HOME
 // ========================================
 
 export default function Home({ navigation }) {

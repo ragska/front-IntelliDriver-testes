@@ -1,53 +1,21 @@
-// ========================================
-// IMPORTAÇÕES E DEPENDÊNCIAS - APP PRINCIPAL
-// ========================================
-
-// Importação do React - biblioteca principal para criação de interfaces
 import * as React from 'react';
-
-// Importações do React Navigation - sistema de navegação entre telas
-import { NavigationContainer } from '@react-navigation/native';    // Container principal de navegação
-import { createNativeStackNavigator } from '@react-navigation/native-stack'; // Criador de navegação em pilha nativa
-
-// Importações de componentes básicos do React Native
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text } from 'react-native';
-
-// Importação do hook personalizado para carregamento de fontes
 import { useFontLoader } from './src/hooks/useFontLoader';
 
-// ========================================
-// IMPORTAÇÕES DAS TELAS (SCREENS)
-// ========================================
+// Importação das telas
+import Welcome from './src/screens/Welcome';
+import Login from './src/screens/Login';
+import Cadastro from './src/screens/Cadastro';
+import Home from './src/screens/Home';
+import Activity from './src/screens/Activity';
+import Historico from './src/screens/Historico';
+import PercursoDetalhes from './src/screens/PercursoDetalhes';
+import CarsAnalytics from './src/screens/CarsAnalytics';
+import DadosPessoais from './src/screens/DadosPessoais';
+import ProfileStats from './src/screens/ProfileStats';
 
-// Importação de todas as telas da aplicação que serão navegáveis
-import Welcome from './src/screens/Welcome';                // Tela de entrada/boas-vindas
-import Login from './src/screens/Login';                    // Tela de autenticação
-import Cadastro from './src/screens/Cadastro';             // Tela de cadastro
-import Home from './src/screens/Home';                      // Tela inicial/dashboard
-import Activity from './src/screens/Activity';              // Tela de atividades/percursos
-import Historico from './src/screens/Historico';            // Tela de histórico de viagens
-import PercursoDetalhes from './src/screens/PercursoDetalhes'; // Tela de detalhes de um percurso específico
-import CarsAnalytics from './src/screens/CarsAnalytics';    // Tela de diagnóstico do veículo
-import DadosPessoais from './src/screens/DadosPessoais';    // Tela de dados pessoais do usuário
-import ProfileStats from './src/screens/ProfileStats';      // Tela de estatísticas do perfil
-
-// ========================================
-// CRIAÇÃO DO NAVEGADOR - STACK NAVIGATOR
-// ========================================
-
-/**
- * CRIAÇÃO DA INSTÂNCIA DO STACK NAVIGATOR
- * 
- * createNativeStackNavigator() cria um navegador em pilha nativo que:
- * - Gerencia uma pilha de telas onde novas telas são empilhadas sobre as anteriores
- * - Utiliza animações nativas do sistema operacional (iOS/Android)
- * - Permite navegação para frente (push) e para trás (pop)
- * - Mantém histórico de navegação automaticamente
- * 
- * O navegador retorna um objeto com:
- * - Navigator: componente container das telas
- * - Screen: componente para definir cada tela individual
- */
 const Stack = createNativeStackNavigator();
 
 // ========================================

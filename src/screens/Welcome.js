@@ -1,14 +1,3 @@
-// ========================================
-// TELA DE ENTRADA - WELCOME
-// ========================================
-
-/**
- * IMPORTAÇÕES E DEPENDÊNCIAS
- * 
- * Tela de entrada que apresenta as opções de Login ou Cadastro
- * para novos usuários ou usuários existentes.
- */
-
 import React from 'react';
 import { 
   StyleSheet,
@@ -17,37 +6,10 @@ import {
   View,
   Image
 } from 'react-native';
-
-// Importações do sistema de design centralizado
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
-
-// Importação da função helper para fontes
 import { getFontFamily } from '../hooks/useFontLoader';
 
-// ========================================
-// COMPONENTE PRINCIPAL - WELCOME
-// ========================================
-
-/**
- * COMPONENTE Welcome
- * 
- * Tela de entrada do aplicativo IntelliDriver que apresenta
- * as opções de autenticação para o usuário.
- * 
- * Funcionalidades principais:
- * 1. Apresentação visual da marca
- * 2. Botão para ir para Login
- * 3. Botão para ir para Cadastro
- * 4. Design atraente e profissional
- * 
- * @param {Object} navigation - Objeto de navegação do React Navigation
- * @returns {JSX.Element} - Tela de boas-vindas renderizada
- */
 export default function Welcome({ navigation }) {
-
-  // ========================================
-  // FUNÇÕES DE NAVEGAÇÃO
-  // ========================================
   
   /**
    * FUNÇÃO DE NAVEGAÇÃO PARA LOGIN

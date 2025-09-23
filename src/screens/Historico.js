@@ -1,34 +1,13 @@
-// Importações de componentes nativos do React Native para construção da interface de histórico
-// StyleSheet: Sistema de estilos otimizado para definição de aparência
-// Text: Componente fundamental para exibição de textos estilizados
-// View: Container universal para layout e estruturação visual
-// FlatList: Componente de lista performática para grandes volumes de dados
-// Image: Componente para renderização de imagens dos percursos
-// TouchableOpacity: Botão interativo com feedback visual de opacidade
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
-// Importação do hook useState para gerenciamento de estados locais do componente
 import { useState } from 'react';
-// Importação do hook de navegação para transição entre telas
 import { useNavigation } from '@react-navigation/native';
-// Importação do componente NavBar para navegação inferior consistente
 import NavBar from '../components/Navbar';
-// Importação do componente Header para cabeçalho com logo centralizada
 import Header from '../components/Header';
-// Importação do componente Calendario para seleção de datas e visualização temporal
 import Calendario from '../components/Calendario';
-// Importação do ícone personalizado EcoCoin para exibição de pontuação
 import EcoCoinIcon from '../assets/ecocoin-icon';
-// Importações de funções utilitárias para manipulação de dados de percursos
-// getPercursosByDate: busca percursos filtrados por data específica
-// formatDateToString: converte objetos de data para string no formato adequado
-// getTodayString: retorna string da data atual para inicialização
-// getTodayString: retorna string da data atual para inicialização
 import { getPercursosByDate, formatDateToString, getTodayString } from '../data/percursosData';
 
-// Componente funcional principal Historico que gerencia visualização de percursos históricos
-// Permite alternância entre visualização semanal e mensal com filtros por data
 export default function Historico() {
-  // Hook de navegação para transição para tela de detalhes de percurso
   const navigation = useNavigation();
   // Estado para controlar tipo de visualização do calendário (semanal vs mensal)
   // true = visualização semanal (padrão), false = visualização mensal

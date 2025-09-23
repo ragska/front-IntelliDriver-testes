@@ -1,14 +1,3 @@
-// ========================================
-// TELA DE DADOS PESSOAIS - INTELLIDRIVER
-// ========================================
-
-/**
- * IMPORTAÇÕES E DEPENDÊNCIAS
- * 
- * Tela de dados pessoais do aplicativo IntelliDriver.
- * Focada exclusivamente na edição de informações pessoais e do veículo.
- */
-
 import React, { useState } from 'react';
 import { 
   StyleSheet, 
@@ -24,7 +13,6 @@ import {
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 import BackButton from '../components/BackButton';
 import Header from '../components/Header';
 import { colors, fonts, spacing, borderRadius, shadows } from '../constants/theme';
@@ -35,16 +23,8 @@ import { getFontFamily } from '../hooks/useFontLoader';
 // ========================================
 
 export default function DadosPessoais({ navigation }) {
-  // Estado para controlar modo de edição do perfil (visualização vs edição)
-  // Permite alternar entre modo de leitura e modo de edição dos dados do usuário
   const [isEditing, setIsEditing] = useState(false);
   
-  // Estado para controlar visibilidade do modal de seleção de imagem
-  // Gerencia a exibição do picker de imagem (câmera ou galeria)
-  const [showImagePicker, setShowImagePicker] = useState(false);
-  
-  // Estado principal contendo todos os dados do perfil do usuário
-  // Centraliza informações pessoais, preferências e configurações do usuário
   const [profileData, setProfileData] = useState({
     // Nome completo do usuário exibido no perfil e utilizado em toda aplicação
     name: 'João Silva',
@@ -116,64 +96,8 @@ export default function DadosPessoais({ navigation }) {
     setIsEditing(false);
   };
 
-  // Função assíncrona para seleção de imagem de perfil
-  // Gerencia permissões e lançamento da câmera ou galeria
   const pickImage = async (source) => {
-    try {
-      let result;
-      
-      // Fluxo para captura de imagem via câmera do dispositivo
-      if (source === 'camera') {
-        // Solicita permissão para acessar câmera do dispositivo
-        const permission = await ImagePicker.requestCameraPermissionsAsync();
-        if (!permission.granted) {
-          Alert.alert('Erro', 'Permissão para acessar a câmera é necessária');
-          return;
-        }
-        // Lança interface da câmera com configurações específicas para perfil
-        result = await ImagePicker.launchCameraAsync({
-          // Restringe seleção apenas para imagens
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          // Permite edição/crop da imagem capturada
-          allowsEditing: true,
-          // Define proporção quadrada 1:1 ideal para fotos de perfil
-          aspect: [1, 1],
-          // Define qualidade de compressão (0.8 = 80% para otimizar tamanho)
-          quality: 0.8,
-        });
-      } else {
-        // Fluxo para seleção de imagem da galeria/biblioteca de mídia
-        // Solicita permissão para acessar galeria de fotos do dispositivo
-        const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (!permission.granted) {
-          Alert.alert('Erro', 'Permissão para acessar a galeria é necessária');
-          return;
-        }
-        // Lança interface da galeria com mesmas configurações da câmera
-        result = await ImagePicker.launchImageLibraryAsync({
-          // Restringe seleção apenas para imagens
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          // Permite edição/crop da imagem selecionada
-          allowsEditing: true,
-          // Define proporção quadrada 1:1 ideal para fotos de perfil
-          aspect: [1, 1],
-          // Define qualidade de compressão para otimização
-          quality: 0.8,
-        });
-      }
-
-      // Processa resultado da seleção de imagem se não foi cancelada
-      if (!result.canceled) {
-        // Atualiza estado temporário com URI da imagem selecionada
-        // Preserva outros dados do perfil e atualiza apenas a imagem
-        setTempData(prev => ({ ...prev, profileImage: result.assets[0].uri }));
-      }
-    } catch (error) {
-      // Tratamento de erro genérico para falhas na seleção de imagem
-      Alert.alert('Erro', 'Erro ao selecionar imagem');
-    }
-    // Fecha modal de seleção independente do resultado
-    setShowImagePicker(false);
+    Alert.alert('Funcionalidade Desabilitada', 'A seleção de imagem foi temporariamente desabilitada.');
   };
 
   // Função helper para renderização consistente de campos do perfil
@@ -243,14 +167,11 @@ export default function DadosPessoais({ navigation }) {
               </View>
             )}
             
-            {/* Botão para alterar imagem visível apenas em modo de edição */}
             {isEditing && (
               <TouchableOpacity
                 style={styles.changeImageButton}
-                // Abre modal de seleção de imagem (câmera ou galeria)
-                onPress={() => setShowImagePicker(true)}
+                onPress={() => Alert.alert('Funcionalidade Desabilitada', 'A troca de imagem foi temporariamente desabilitada.')}
               >
-                {/* Ícone de câmera indicando possibilidade de alterar foto */}
                 <Ionicons name="camera" size={20} color={colors.surface} />
               </TouchableOpacity>
             )}
@@ -304,54 +225,6 @@ export default function DadosPessoais({ navigation }) {
         {/* Espaçamento inferior para evitar sobreposição com elementos flutuantes */}
         <View style={{ height: 100 }} />
       </ScrollView>
-
-      {/* Modal para seleção da fonte da imagem de perfil */}
-      <Modal
-        // Animação de slide para entrada suave do modal
-        animationType="slide"
-        // Fundo transparente para overlay escuro
-        transparent={true}
-        // Controle de visibilidade baseado no estado
-        visible={showImagePicker}
-        // Função para fechar modal quando usuário pressiona botão voltar (Android)
-        onRequestClose={() => setShowImagePicker(false)}
-      >
-        {/* Overlay escuro semitransparente cobrindo toda a tela */}
-        <View style={styles.modalOverlay}>
-          {/* Container principal do conteúdo do modal */}
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Escolher Foto</Text>
-            
-            {/* Botão para capturar foto usando câmera do dispositivo */}
-            <TouchableOpacity
-              style={styles.modalOption}
-              // Chama função pickImage com parâmetro 'camera' para abrir câmera
-              onPress={() => pickImage('camera')}
-            >
-              <Ionicons name="camera" size={24} color={colors.primary} />
-              <Text style={styles.modalOptionText}>Tirar Foto</Text>
-            </TouchableOpacity>
-            
-            {/* Botão para selecionar foto da galeria/biblioteca de mídia */}
-            <TouchableOpacity
-              style={styles.modalOption}
-              // Chama função pickImage com parâmetro 'gallery' para abrir galeria
-              onPress={() => pickImage('gallery')}
-            >
-              <Ionicons name="images" size={24} color={colors.primary} />
-              <Text style={styles.modalOptionText}>Escolher da Galeria</Text>
-            </TouchableOpacity>
-            
-            {/* Botão de cancelar que fecha modal sem ação */}
-            <TouchableOpacity
-              style={styles.modalCancel}
-              onPress={() => setShowImagePicker(false)}
-            >
-              <Text style={styles.modalCancelText}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
