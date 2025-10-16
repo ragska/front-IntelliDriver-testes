@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import Header from '../components/Header';
 import EcoCoinIcon from '../assets/ecocoin-icon';
+import * as ImagePicker from 'expo-image-picker';
 
 /**
  * Tela de Detalhes do Percurso - Exibe informações completas de uma viagem
@@ -53,6 +54,50 @@ export default function PercursoDetalhes() {
     </View>
   );
 
+  // Calcula horário de término a partir de horario (HH:MM) e duracao ('XX min')
+  const calculateEndTime = (start, dur) => {
+    if (!start || !dur) return null;
+    try {
+      const [h, m] = start.split(':').map(Number);
+      const minutes = parseInt(String(dur).replace(/[^0-9]/g, ''), 10);
+      const date = new Date();
+      date.setHours(h || 0, m || 0, 0, 0);
+      date.setMinutes(date.getMinutes() + (isNaN(minutes) ? 0 : minutes));
+      return date.toTimeString().slice(0, 5);
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // Estado local para imagem selecionada pelo usuário
+  const [localImg, setLocalImg] = useState(null);
+
+  // Handler para adicionar imagem — usa expo-image-picker (compatível com Expo Go)
+  const handleAddImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') return;
+
+      // Fallback: don't pass mediaTypes to avoid native casting issues on some environments
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: false,
+        quality: 0.8,
+      });
+
+      // compatibilidade com diferentes versões: result.cancelled (older) or result.assets (newer)
+      if (result.cancelled === false && result.uri) {
+        setLocalImg(result.uri);
+        return;
+      }
+
+      if (result.assets && result.assets.length > 0) {
+        setLocalImg(result.assets[0].uri);
+      }
+    } catch (err) {
+      console.warn('Erro ao abrir a galeria', err);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -66,16 +111,28 @@ export default function PercursoDetalhes() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Seção principal com imagem e informações básicas */}
-        <View style={styles.header}>
-          <Image source={{ uri: percurso.img }} style={styles.headerImage} />
-          <View style={styles.headerInfo}>
-            <Text style={styles.title}>{percurso.nome}</Text>
-            <Text style={styles.date}>{formatDisplayDate(percurso.selectedDate)}</Text>
-            <Text style={styles.time}>{percurso.horario}</Text>
-          </View>
+        {/* Imagem grande no topo */}
+        <View style={styles.topImageContainer}>
+          {localImg ? (
+            <Image source={{ uri: localImg }} style={styles.topImage} />
+          ) : percurso.img === 'imgPercurso.png' ? (
+            <TouchableOpacity style={styles.cameraPlaceholder} onPress={handleAddImage} activeOpacity={0.7}>
+              <View style={styles.cameraBody}>
+                <View style={styles.cameraLens} />
+                <View style={styles.cameraShutter} />
+              </View>
+              <Text style={styles.addImageText}>Adicione uma imagem para recordar</Text>
+            </TouchableOpacity>
+          ) : (
+            <Image source={{ uri: percurso.img }} style={styles.topImage} />
+          )}
         </View>
 
+        {/* Seção principal com informações básicas */}
+        <View style={styles.headerInfoBlock}>
+          <Text style={styles.title}>{percurso.horario}{percurso.duracao ? ` – ${calculateEndTime(percurso.horario, percurso.duracao) || ''}` : ''}</Text>
+          <Text style={styles.date}>{formatDisplayDate(percurso.selectedDate)}</Text>
+        </View>
 
         {/* Seção com dados técnicos do percurso */}
         <View style={styles.section}>
@@ -84,110 +141,38 @@ export default function PercursoDetalhes() {
           <DetailRow label="Duração" value={percurso.duracao} />
           <DetailRow label="Velocidade Média" value={percurso.velocidadeMedia} />
           <DetailRow label="Combustível Gasto" value={percurso.combustivel} />
-          <DetailRow 
-            label="Custo Estimado" 
-            value={percurso.custo} 
-            style={styles.costValue} 
-          />
         </View>
 
         {/* Seção destacada dos EcoCoins ganhos/perdidos */}
         <View style={styles.ecoCoinsSection}>
-          {/* Header dos EcoCoins com ícone e título */}
           <View style={styles.ecoCoinsHeader}>
             <EcoCoinIcon size={24} style={styles.ecoCoinsHeaderIcon} />
-
-            <Text style={styles.ecoCoinsTitle}>
-              {(percurso.ecoCoins || 0) >= 0 ? 'EcoCoins Ganhos' : 'EcoCoins Perdidos'}
-            </Text>
+            <Text style={styles.ecoCoinsTitle}>{(percurso.ecoCoins || 0) >= 0 ? 'EcoCoins Ganhos' : 'EcoCoins Perdidos'}</Text>
           </View>
 
           <View style={[
             styles.ecoCoinsCard,
-          
             (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsCardNegative : styles.ecoCoinsCardPositive
           ]}>
-
-            <Text style={[
-              styles.ecoCoinsAmount,
-            
-              (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsAmountNegative : styles.ecoCoinsAmountPositive
-            ]}>
-
-              {(percurso.ecoCoins || 0) >= 0 ? `+${percurso.ecoCoins || 0}` : percurso.ecoCoins || 0}
-            </Text>
-
-            <Text style={[
-              styles.ecoCoinsLabel,
-              (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsLabelNegative : styles.ecoCoinsLabelPositive
-            ]}>
-              EcoCoins
-            </Text>
-
-            <Text style={styles.ecoCoinsDescription}>
-              {(percurso.ecoCoins || 0) >= 0 
-                ? 'Baseado na eficiência da sua condução' 
-                : 'Condução ineficiente resulta em perda de EcoCoins'
-              }
-            </Text>
+            <Text style={[styles.ecoCoinsAmount, (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsAmountNegative : styles.ecoCoinsAmountPositive]}> {(percurso.ecoCoins || 0) >= 0 ? `+${percurso.ecoCoins || 0}` : percurso.ecoCoins || 0}</Text>
+            <Text style={[styles.ecoCoinsLabel, (percurso.ecoCoins || 0) < 0 ? styles.ecoCoinsLabelNegative : styles.ecoCoinsLabelPositive]}>EcoCoins</Text>
+            <Text style={styles.ecoCoinsDescription}>{(percurso.ecoCoins || 0) >= 0 ? 'Baseado na eficiência da sua condução' : 'Condução ineficiente resulta em perda de EcoCoins'}</Text>
           </View>
         </View>
 
-
-
         {percurso.rota && (
           <View style={styles.section}>
-
             <Text style={styles.sectionTitle}>Rota Utilizada</Text>
-
             <Text style={styles.routeText}>{percurso.rota}</Text>
           </View>
         )}
 
-
-
         {percurso.observacoes && (
           <View style={styles.section}>
-
             <Text style={styles.sectionTitle}>Observações</Text>
-
             <Text style={styles.observationText}>{percurso.observacoes}</Text>
           </View>
         )}
-
-
-
-        <View style={styles.section}>
-
-          <Text style={styles.sectionTitle}>Estatísticas</Text>
-          
-
-          <View style={styles.statsContainer}>
-
-            <View style={styles.statBox}>
-
-              <Text style={styles.statValue}>{percurso.distancia?.replace(' km', '') || '0'}</Text>
-
-              <Text style={styles.statLabel}>Quilômetros</Text>
-            </View>
-            
-
-            <View style={styles.statBox}>
-
-              <Text style={styles.statValue}>{percurso.duracao?.replace(' min', '') || '0'}</Text>
-
-              <Text style={styles.statLabel}>Minutos</Text>
-            </View>
-            
-
-            <View style={styles.statBox}>
-
-              <Text style={styles.statValue}>{percurso.combustivel?.replace('L', '') || '0'}</Text>
-
-              <Text style={styles.statLabel}>Litros</Text>
-            </View>
-          </View>
-        </View>
       </ScrollView>
     </View>
   );
@@ -470,5 +455,61 @@ const styles = StyleSheet.create({
     fontSize: 12, 
     color: '#666', 
     marginTop: 4, 
+  },
+  topImageContainer: {
+    width: '100%',
+    height: 220,
+    backgroundColor: '#EFEFEF',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 16,
+  },
+  topImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  cameraPlaceholder: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  cameraBody: {
+    width: 64,
+    height: 44,
+    borderRadius: 6,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+    shadowColor: 'rgba(0,0,0,0.08)',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  cameraLens: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#7F9170',
+  },
+  cameraShutter: {
+    position: 'absolute',
+    right: 6,
+    top: 6,
+    width: 10,
+    height: 6,
+    borderRadius: 2,
+    backgroundColor: '#51663E',
+  },
+  addImageText: {
+    fontSize: 12,
+    color: '#7F9170',
+    marginTop: 6,
+  },
+  headerInfoBlock: {
+    marginBottom: 12,
   },
 });
